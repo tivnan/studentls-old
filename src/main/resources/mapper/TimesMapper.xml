@@ -1,0 +1,362 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tivnan.studentls.dao.TimesMapper">
+    <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Times">
+        <id column="week" jdbcType="INTEGER" property="week"/>
+        <id column="time" jdbcType="INTEGER" property="time"/>
+        <result column="course_id" jdbcType="INTEGER" property="courseId"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    week, time, course_id
+  </sql>
+    <select id="selectByExample" parameterType="com.tivnan.studentls.bean.TimesExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="com.tivnan.studentls.bean.TimesKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from times
+        where week = #{week,jdbcType=INTEGER}
+        and time = #{time,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="com.tivnan.studentls.bean.TimesKey">
+    delete from times
+    where week = #{week,jdbcType=INTEGER}
+      and time = #{time,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.tivnan.studentls.bean.TimesExample">
+        delete from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.tivnan.studentls.bean.Times">
+    insert into times (week, time, course_id
+      )
+    values (#{week,jdbcType=INTEGER}, #{time,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.tivnan.studentls.bean.Times">
+        insert into times
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="week != null">
+                week,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="week != null">
+                #{week,jdbcType=INTEGER},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.tivnan.studentls.bean.TimesExample" resultType="java.lang.Long">
+        select count(*) from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update times
+        <set>
+            <if test="record.week != null">
+                week = #{record.week,jdbcType=INTEGER},
+            </if>
+            <if test="record.time != null">
+                time = #{record.time,jdbcType=INTEGER},
+            </if>
+            <if test="record.courseId != null">
+                course_id = #{record.courseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update times
+        set week = #{record.week,jdbcType=INTEGER},
+        time = #{record.time,jdbcType=INTEGER},
+        course_id = #{record.courseId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tivnan.studentls.bean.Times">
+        update times
+        <set>
+            <if test="courseId != null">
+                course_id = #{courseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where week = #{week,jdbcType=INTEGER}
+        and time = #{time,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tivnan.studentls.bean.Times">
+    update times
+    set course_id = #{courseId,jdbcType=INTEGER}
+    where week = #{week,jdbcType=INTEGER}
+      and time = #{time,jdbcType=INTEGER}
+  </update>
+    <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Times">
+        <id column="week" jdbcType="INTEGER" property="week"/>
+        <id column="time" jdbcType="INTEGER" property="time"/>
+        <result column="course_id" jdbcType="INTEGER" property="courseId"/>
+    </resultMap>
+    <sql id="Example_Where_Clause">
+        <where>
+            <foreach collection="oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Update_By_Example_Where_Clause">
+        <where>
+            <foreach collection="example.oredCriteria" item="criteria" separator="or">
+                <if test="criteria.valid">
+                    <trim prefix="(" prefixOverrides="and" suffix=")">
+                        <foreach collection="criteria.criteria" item="criterion">
+                            <choose>
+                                <when test="criterion.noValue">
+                                    and ${criterion.condition}
+                                </when>
+                                <when test="criterion.singleValue">
+                                    and ${criterion.condition} #{criterion.value}
+                                </when>
+                                <when test="criterion.betweenValue">
+                                    and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                                </when>
+                                <when test="criterion.listValue">
+                                    and ${criterion.condition}
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
+                                        #{listItem}
+                                    </foreach>
+                                </when>
+                            </choose>
+                        </foreach>
+                    </trim>
+                </if>
+            </foreach>
+        </where>
+    </sql>
+    <sql id="Base_Column_List">
+    week, time, course_id
+  </sql>
+    <select id="selectByExample" parameterType="com.tivnan.studentls.bean.TimesExample" resultMap="BaseResultMap">
+        select
+        <if test="distinct">
+            distinct
+        </if>
+        <include refid="Base_Column_List"/>
+        from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+    <select id="selectByPrimaryKey" parameterType="com.tivnan.studentls.bean.TimesKey" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from times
+        where week = #{week,jdbcType=INTEGER}
+        and time = #{time,jdbcType=INTEGER}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="com.tivnan.studentls.bean.TimesKey">
+    delete from times
+    where week = #{week,jdbcType=INTEGER}
+      and time = #{time,jdbcType=INTEGER}
+  </delete>
+    <delete id="deleteByExample" parameterType="com.tivnan.studentls.bean.TimesExample">
+        delete from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </delete>
+    <insert id="insert" parameterType="com.tivnan.studentls.bean.Times">
+    insert into times (week, time, course_id
+      )
+    values (#{week,jdbcType=INTEGER}, #{time,jdbcType=INTEGER}, #{courseId,jdbcType=INTEGER}
+      )
+  </insert>
+    <insert id="insertSelective" parameterType="com.tivnan.studentls.bean.Times">
+        insert into times
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="week != null">
+                week,
+            </if>
+            <if test="time != null">
+                time,
+            </if>
+            <if test="courseId != null">
+                course_id,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="week != null">
+                #{week,jdbcType=INTEGER},
+            </if>
+            <if test="time != null">
+                #{time,jdbcType=INTEGER},
+            </if>
+            <if test="courseId != null">
+                #{courseId,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
+    <select id="countByExample" parameterType="com.tivnan.studentls.bean.TimesExample" resultType="java.lang.Long">
+        select count(*) from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+    </select>
+    <update id="updateByExampleSelective" parameterType="map">
+        update times
+        <set>
+            <if test="record.week != null">
+                week = #{record.week,jdbcType=INTEGER},
+            </if>
+            <if test="record.time != null">
+                time = #{record.time,jdbcType=INTEGER},
+            </if>
+            <if test="record.courseId != null">
+                course_id = #{record.courseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByExample" parameterType="map">
+        update times
+        set week = #{record.week,jdbcType=INTEGER},
+        time = #{record.time,jdbcType=INTEGER},
+        course_id = #{record.courseId,jdbcType=INTEGER}
+        <if test="_parameter != null">
+            <include refid="Update_By_Example_Where_Clause"/>
+        </if>
+    </update>
+    <update id="updateByPrimaryKeySelective" parameterType="com.tivnan.studentls.bean.Times">
+        update times
+        <set>
+            <if test="courseId != null">
+                course_id = #{courseId,jdbcType=INTEGER},
+            </if>
+        </set>
+        where week = #{week,jdbcType=INTEGER}
+        and time = #{time,jdbcType=INTEGER}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.tivnan.studentls.bean.Times">
+    update times
+    set course_id = #{courseId,jdbcType=INTEGER}
+    where week = #{week,jdbcType=INTEGER}
+      and time = #{time,jdbcType=INTEGER}
+  </update>
+</mapper>
