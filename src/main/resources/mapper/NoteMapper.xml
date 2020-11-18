@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tivnan.studentls.dao.NoteMapper">
+
     <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Note">
         <id column="note_id" jdbcType="INTEGER" property="noteId"/>
         <result column="start_time" jdbcType="DATE" property="startTime"/>
@@ -10,6 +11,7 @@
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="student_id" jdbcType="INTEGER" property="studentId"/>
     </resultMap>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -73,6 +75,7 @@
     <sql id="Base_Column_List">
     note_id, start_time, end_time, content, state, type, student_id
   </sql>
+
     <select id="selectByExample" parameterType="com.tivnan.studentls.bean.NoteExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
@@ -93,6 +96,7 @@
         from note
         where note_id = #{noteId,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from note
     where note_id = #{noteId,jdbcType=INTEGER}
@@ -103,6 +107,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
+
     <insert id="insert" parameterType="com.tivnan.studentls.bean.Note">
     insert into note (note_id, start_time, end_time, 
       content, state, type, 
@@ -160,12 +165,14 @@
             </if>
         </trim>
     </insert>
+
     <select id="countByExample" parameterType="com.tivnan.studentls.bean.NoteExample" resultType="java.lang.Long">
         select count(*) from note
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </select>
+
     <update id="updateByExampleSelective" parameterType="map">
         update note
         <set>
@@ -242,4 +249,5 @@
       student_id = #{studentId,jdbcType=INTEGER}
     where note_id = #{noteId,jdbcType=INTEGER}
   </update>
+
 </mapper>

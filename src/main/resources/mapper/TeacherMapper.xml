@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tivnan.studentls.dao.TeacherMapper">
+
     <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Teacher">
         <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="open_id" jdbcType="CHAR" property="openId"/>
     </resultMap>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -69,6 +71,7 @@
     <sql id="Base_Column_List">
     teacher_id, name, open_id
   </sql>
+
     <select id="selectByExample" parameterType="com.tivnan.studentls.bean.TeacherExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
@@ -89,6 +92,7 @@
         from teacher
         where teacher_id = #{teacherId,jdbcType=INTEGER}
     </select>
+
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from teacher
     where teacher_id = #{teacherId,jdbcType=INTEGER}
@@ -99,6 +103,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
+
     <insert id="insert" parameterType="com.tivnan.studentls.bean.Teacher">
     insert into teacher (teacher_id, name, open_id
       )
@@ -130,12 +135,14 @@
             </if>
         </trim>
     </insert>
+
     <select id="countByExample" parameterType="com.tivnan.studentls.bean.TeacherExample" resultType="java.lang.Long">
         select count(*) from teacher
         <if test="_parameter != null">
             <include refid="Example_Where_Clause"/>
         </if>
     </select>
+
     <update id="updateByExampleSelective" parameterType="map">
         update teacher
         <set>
@@ -180,4 +187,5 @@
       open_id = #{openId,jdbcType=CHAR}
     where teacher_id = #{teacherId,jdbcType=INTEGER}
   </update>
+
 </mapper>
