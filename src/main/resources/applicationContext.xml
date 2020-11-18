@@ -24,9 +24,16 @@
     <!--    配置和mybatis整合-->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="configLocation" value="classpath:mybatis.xml"></property>
-        <property name="dataSource" value="comboPooledDataSource"></property>
+        <property name="dataSource" ref="comboPooledDataSource"></property>
         <property name="mapperLocations" value="classpath:mapper/*.xml"></property>
     </bean>
+
+    <!--    配置一个批量的sqlSession-->
+    <bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+        <constructor-arg name="sqlSessionFactory" ref="sqlSessionFactory"></constructor-arg>
+        <constructor-arg name="executorType" value="BATCH"></constructor-arg>
+    </bean>
+
 
     <!--    配置扫描器。将mybatis接口的实现加入到ioc中-->
     <bean id="mapperScannerConfigurer" class="org.mybatis.spring.mapper.MapperScannerConfigurer">
