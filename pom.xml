@@ -99,6 +99,20 @@
             <version>1.4.0</version>
         </dependency>
 
+        <!--        &lt;!&ndash;        pagehelper&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.pagehelper</groupId>-->
+        <!--            <artifactId>pagehelper</artifactId>-->
+        <!--            <version>5.2.0</version>-->
+        <!--        </dependency>-->
+
+        <!--        自动将resposebody转换为json-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+
 
     </dependencies>
 

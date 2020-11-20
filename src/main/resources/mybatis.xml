@@ -14,4 +14,10 @@
         <package name="com.tivnan.studentls.bean"/>
     </typeAliases>
 
+    <!--    pagehelper-->
+    <!--    <plugins>-->
+    <!--        <plugin interceptor="com.github.pagehelper.PageInterceptor">-->
+    <!--        </plugin>-->
+    <!--    </plugins>-->
+
 </configuration>
