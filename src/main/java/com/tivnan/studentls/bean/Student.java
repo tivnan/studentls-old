@@ -1,6 +1,15 @@
 package com.tivnan.studentls.bean;
 
 public class Student {
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + studentId +
+                ", name='" + name + '\'' +
+                ", openId='" + openId + '\'' +
+                '}';
+    }
+
     private Integer studentId;
 
     private String name;
