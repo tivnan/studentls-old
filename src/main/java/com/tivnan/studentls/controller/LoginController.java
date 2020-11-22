@@ -41,9 +41,10 @@ public class LoginController {
     @RequestMapping("/login")
     public Map<String, Object> Login(@RequestParam("code") String code,
                                      @RequestParam("identity") String identity,
-                                     @RequestParam("ID") Integer id) throws IOException {
+                                     @RequestParam("id") Integer id) throws IOException {
 
         String openID = getOpenID(code).getOpenid();
+//        String openID = code;
 
         Map<String, Object> loginData = new HashMap<>();
 

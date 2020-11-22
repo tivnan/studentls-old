@@ -25,29 +25,55 @@ public class TeacherService {
 
     public Teacher login(String openID,Integer id) {
 
-        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+        TeacherExample teacherExample = new TeacherExample();
+        TeacherExample.Criteria criteria = teacherExample.createCriteria();
+        criteria.andOpenIdEqualTo(openID);
 
-//        先确认这个身份是不是真的存在
-        if (teacher == null) {
-            return null;
+        List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
+
+        if (teachers != null && teachers.size() != 0) {
+            if (teachers.get(0).getTeacherId().equals(id)) {
+                return teachers.get(0);
+            } else {
+                return null;
+            }
+        } else {
+            Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+
+            if (teacher != null) {
+                teacher.setOpenId(openID);
+                teacherMapper.updateByPrimaryKey(teacher);
+                return teacher;
+            } else {
+                return null;
+            }
         }
 
-//        确认学生号和openid是不是确实对应
-        if (teacher.getOpenId() != null && openID.equals(teacher.getOpenId())) {
-            return teacher;
-        }
 
-        if (teacher.getOpenId() != null && !openID.equals(teacher.getOpenId())) {
-            return null;
-        }
 
-        if (teacher.getOpenId() == null) {
-            teacher.setOpenId(openID);
-            teacherMapper.updateByPrimaryKey(teacher);
-            return teacher;
-        }
-
-        return null;
+//        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
+//
+////        先确认这个身份是不是真的存在
+//        if (teacher == null) {
+//            return null;
+//        }
+//
+////        确认学生号和openid是不是确实对应
+//        if (teacher.getOpenId() != null && openID.equals(teacher.getOpenId())) {
+//            return teacher;
+//        }
+//
+//        if (teacher.getOpenId() != null && !openID.equals(teacher.getOpenId())) {
+//            return null;
+//        }
+//
+//        if (teacher.getOpenId() == null) {
+//            teacher.setOpenId(openID);
+//            teacherMapper.updateByPrimaryKey(teacher);
+//            return teacher;
+//        }
+//
+//        return null;
 
 
 //        TeacherExample teacherExample = new TeacherExample();
