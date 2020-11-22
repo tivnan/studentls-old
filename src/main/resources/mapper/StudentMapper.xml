@@ -8,6 +8,14 @@
         <result column="open_id" jdbcType="CHAR" property="openId"/>
     </resultMap>
 
+    <resultMap id="SectionResultMap" type="com.tivnan.studentls.bean.Section">
+        <id column="courseId" jdbcType="INTEGER" property="courseId"/>
+        <result column="courseName" jdbcType="CHAR" property="courseName"/>
+        <result column="teacherName" jdbcType="CHAR" property="teacherName"/>
+        <result column="timeWeek" jdbcType="INTEGER" property="timeWeek"/>
+        <result column="timeSlot" jdbcType="INTEGER" property="timeSlot"/>
+    </resultMap>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -71,6 +79,28 @@
     <sql id="Base_Column_List">
     student_id, name, open_id
   </sql>
+
+    <!--    请假拉取的课程-->
+    <sql id="Section_List">
+        c.course_id as courseId,
+        c.course_name as courseName,
+        t2.name as teacherName,
+        t3.week as timeWeek,
+        t3.time as timeSlot
+    </sql>
+    <select id="selectWithSection" resultMap="SectionResultMap">
+        select
+        <include refid="Section_List"></include>
+        from student
+        left join takes t on student.student_id = t.student_id
+        left join course c on t.course_id = c.course_id
+        left join teacher t2 on t2.teacher_id = c.teacher_id
+        left join times t3 on c.course_id = t3.course_id
+        where t.student_id = #{studentId}
+        and t3.week = #{timeWeek}
+        and t3.time between #{timeSlotBegin} and #{timeSlotEnd};
+    </select>
+
 
     <select id="selectByExample" parameterType="com.tivnan.studentls.bean.StudentExample" resultMap="BaseResultMap">
         select
