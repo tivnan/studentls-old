@@ -1,7 +1,7 @@
 package com.tivnan.studentls.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.tivnan.studentls.bean.OpenIDBean;
+import com.tivnan.studentls.bean.vo.OpenIDBean;
 import com.tivnan.studentls.bean.Student;
 import com.tivnan.studentls.bean.Teacher;
 import com.tivnan.studentls.service.StudentService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import javax.sound.midi.Soundbank;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;

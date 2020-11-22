@@ -1,6 +1,6 @@
 package com.tivnan.studentls.dao;
 
-import com.tivnan.studentls.bean.Section;
+import com.tivnan.studentls.bean.vo.Section;
 import com.tivnan.studentls.bean.Student;
 import com.tivnan.studentls.bean.StudentExample;
 

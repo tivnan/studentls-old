@@ -1,9 +1,12 @@
 package com.tivnan.studentls.controller;
 
+import com.tivnan.studentls.bean.vo.Section;
+import com.tivnan.studentls.bean.vo.SectionWithSlot;
 import com.tivnan.studentls.service.SectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.ArrayList;
@@ -27,18 +30,24 @@ public class SectionController {
     //    提供日期和学生信息 拉取课程小节信息
     @ResponseBody
     @RequestMapping("/loadSection")
-    public Map<String, Object> loadSection(String date, String studentID) {
+    public Map<String, Object> loadSection(@RequestParam List<String> dates, @RequestParam String studentID) {
 
-        HashMap<String, Object> sections = new HashMap<>();
+//        System.out.println("studentID = " + studentID);
+//        System.out.println("dates = " + dates);
 
-//        List<Map<String, Object>> section = sectionService.getSection(date, studentID);
-
-        List<Map<String, Object>> list = new ArrayList<>();
         HashMap<String, Object> map = new HashMap<>();
-        sections.put("sections", list);
 
+        List<Section> sections = sectionService.getSection(dates, studentID);
 
-        return sections;
+        ArrayList<SectionWithSlot> sectionWithSlots = new ArrayList<>();
+
+        for (Section section : sections) {
+            sectionWithSlots.add(new SectionWithSlot(section));
+        }
+
+        map.put("sections", sectionWithSlots);
+
+        return map;
     }
 
 }

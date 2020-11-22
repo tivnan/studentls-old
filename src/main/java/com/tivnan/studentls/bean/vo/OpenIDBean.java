@@ -1,4 +1,4 @@
-package com.tivnan.studentls.bean;
+package com.tivnan.studentls.bean.vo;
 
 /**
  * @project: studentls

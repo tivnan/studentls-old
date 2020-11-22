@@ -1,9 +1,13 @@
 package com.tivnan.studentls.service;
 
+import com.tivnan.studentls.bean.vo.Section;
+import com.tivnan.studentls.dao.StudentMapper;
+import com.tivnan.studentls.utils.DataAndSlot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @project: studentls
@@ -14,10 +18,27 @@ import java.util.Map;
  **/
 @Service
 public class SectionService {
-    public List<Map<String, Object>> getSection(String date, String studentID) {
+
+    @Autowired
+    StudentMapper studentMapper;
 
 
+    public List<Section> getSection(List<String> dates, String studentID) {
 
-        return null;
+        Integer beginSlot;
+        Integer endSlot;
+        ArrayList<Section> sections = new ArrayList<>();
+
+        for (String date : dates) {
+            List<Integer> weekAndWeekDay = DataAndSlot.data2slot(date);
+            beginSlot = weekAndWeekDay.get(1) * 4 - 3;
+            endSlot = weekAndWeekDay.get(1) * 4;
+            List<Section> sectionsSin = studentMapper.selectWithSection(Integer.valueOf(studentID), weekAndWeekDay.get(0), beginSlot, endSlot);
+            if (sectionsSin != null) {
+                sections.addAll(sectionsSin);
+            }
+        }
+
+        return sections;
     }
 }

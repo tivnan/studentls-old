@@ -8,7 +8,7 @@
         <result column="open_id" jdbcType="CHAR" property="openId"/>
     </resultMap>
 
-    <resultMap id="SectionResultMap" type="com.tivnan.studentls.bean.Section">
+    <resultMap id="SectionResultMap" type="com.tivnan.studentls.bean.vo.Section">
         <id column="courseId" jdbcType="INTEGER" property="courseId"/>
         <result column="courseName" jdbcType="CHAR" property="courseName"/>
         <result column="teacherName" jdbcType="CHAR" property="teacherName"/>
