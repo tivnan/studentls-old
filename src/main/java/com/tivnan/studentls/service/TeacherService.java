@@ -1,5 +1,6 @@
 package com.tivnan.studentls.service;
 
+import com.tivnan.studentls.bean.Student;
 import com.tivnan.studentls.bean.StudentExample;
 import com.tivnan.studentls.bean.Teacher;
 import com.tivnan.studentls.bean.TeacherExample;
@@ -22,18 +23,43 @@ public class TeacherService {
     @Autowired
     TeacherMapper teacherMapper;
 
-    public Teacher login(String openID) {
+    public Teacher login(String openID,Integer id) {
 
-        TeacherExample teacherExample = new TeacherExample();
-        TeacherExample.Criteria criteria = teacherExample.createCriteria();
-        criteria.andOpenIdEqualTo(openID);
+        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
 
-        List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
-
-        if (teachers.size()==0||teachers==null) {
+//        先确认这个身份是不是真的存在
+        if (teacher == null) {
             return null;
-        }else{
-            return teachers.get(0);
         }
+
+//        确认学生号和openid是不是确实对应
+        if (teacher.getOpenId() != null && openID.equals(teacher.getOpenId())) {
+            return teacher;
+        }
+
+        if (teacher.getOpenId() != null && !openID.equals(teacher.getOpenId())) {
+            return null;
+        }
+
+        if (teacher.getOpenId() == null) {
+            teacher.setOpenId(openID);
+            teacherMapper.updateByPrimaryKey(teacher);
+            return teacher;
+        }
+
+        return null;
+
+
+//        TeacherExample teacherExample = new TeacherExample();
+//        TeacherExample.Criteria criteria = teacherExample.createCriteria();
+//        criteria.andOpenIdEqualTo(openID);
+//
+//        List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
+//
+//        if (teachers.size()==0||teachers==null) {
+//            return null;
+//        }else{
+//            return teachers.get(0);
+//        }
     }
 }

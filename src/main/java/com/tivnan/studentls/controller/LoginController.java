@@ -40,9 +40,24 @@ public class LoginController {
 
     @ResponseBody
     @RequestMapping("/login")
-    public Map<String, Object> Login(@RequestParam("code") String code) throws IOException {
+    public Map<String, Object> Login(@RequestParam("code") String code,
+                                     @RequestParam("identity") String identity,
+                                     @RequestParam("ID") Integer id) throws IOException {
 
-//        String openID = getOpenID(code).getOpenid();
+        String openID = getOpenID(code).getOpenid();
+
+        Map<String, Object> loginData = new HashMap<>();
+
+        if ("student".equals(identity)) {
+            Student student = studentService.login(openID, id);
+            loginData.put("user", student);
+        } else {
+            Teacher teacher = teacherService.login(openID, id);
+            loginData.put("user", teacher);
+        }
+
+        return loginData;
+
 //
 //        Student student = studentService.login(openID);
 //        Teacher teacher = teacherService.login(openID);
@@ -52,7 +67,7 @@ public class LoginController {
         但是如果没有的话，我还需要插入用户，但是按照叶某的接口，不能确认该插教师还是学生
         * */
 
-        Student student = studentService.login(code);
+        /*Student student = studentService.login(code);
         Teacher teacher = teacherService.login(code);
 
         Map<String, Object> loginData = new HashMap<>();
@@ -82,7 +97,7 @@ public class LoginController {
         loginData.put("user", userData);
 
 
-        return loginData;
+        return loginData;*/
     }
 
 
