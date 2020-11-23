@@ -1,13 +1,11 @@
 package com.tivnan.studentls.bean;
 
-import java.util.Date;
-
 public class Note {
-    private Integer noteId;
+    private String noteId;
 
-    private Date startTime;
+    private String startTime;
 
-    private Date endTime;
+    private String endTime;
 
     private String content;
 
@@ -17,28 +15,41 @@ public class Note {
 
     private Integer studentId;
 
-    public Integer getNoteId() {
+    public Note() {
+    }
+
+    public Note(String noteId, String startTime, String endTime, String content, Integer state, Integer type, Integer studentId) {
+        this.noteId = noteId;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.content = content;
+        this.state = state;
+        this.type = type;
+        this.studentId = studentId;
+    }
+
+    public String getNoteId() {
         return noteId;
     }
 
-    public void setNoteId(Integer noteId) {
-        this.noteId = noteId;
+    public void setNoteId(String noteId) {
+        this.noteId = noteId == null ? null : noteId.trim();
     }
 
-    public Date getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(Date startTime) {
-        this.startTime = startTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime == null ? null : startTime.trim();
     }
 
-    public Date getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(Date endTime) {
-        this.endTime = endTime;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime == null ? null : endTime.trim();
     }
 
     public String getContent() {

@@ -12,7 +12,7 @@ public interface NoteMapper {
 
     int deleteByExample(NoteExample example);
 
-    int deleteByPrimaryKey(Integer noteId);
+    int deleteByPrimaryKey(String noteId);
 
     int insert(Note record);
 
@@ -20,7 +20,7 @@ public interface NoteMapper {
 
     List<Note> selectByExample(NoteExample example);
 
-    Note selectByPrimaryKey(Integer noteId);
+    Note selectByPrimaryKey(String noteId);
 
     int updateByExampleSelective(@Param("record") Note record, @Param("example") NoteExample example);
 
