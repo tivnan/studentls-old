@@ -9,9 +9,7 @@ import com.tivnan.studentls.service.TeacherService;
 import com.tivnan.studentls.utils.HttpUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -38,13 +36,22 @@ public class LoginController {
     private TeacherService teacherService;
 
     @ResponseBody
-    @RequestMapping("/login")
-    public Map<String, Object> Login(@RequestParam("code") String code,
-                                     @RequestParam("identity") String identity,
-                                     @RequestParam("id") Integer id) throws IOException {
+    @RequestMapping(value = "/login",method = RequestMethod.POST)
+    public Map<String, Object> Login(@RequestBody Map<String, Object> map) throws IOException {
 
-        String openID = getOpenID(code).getOpenid();
-//        String openID = code;
+//        , @RequestParam("code") String code,
+//        @RequestParam("identity") String identity,
+//        @RequestParam("id") Integer id
+
+        String code = (String) map.get("code");
+        String identity = (String) map.get("identity");
+        Integer id = (Integer) map.get("id");
+
+
+//        String openID = getOpenID(code).getOpenid();
+        String openID = code;
+
+        System.out.println("code = " + code);
 
         Map<String, Object> loginData = new HashMap<>();
 

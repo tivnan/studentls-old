@@ -30,14 +30,14 @@ public class SectionController {
     //    提供日期和学生信息 拉取课程小节信息
     @ResponseBody
     @RequestMapping("/loadSection")
-    public Map<String, Object> loadSection(@RequestParam List<String> dates, @RequestParam String studentID) {
+    public Map<String, Object> loadSection(@RequestParam List<String> dates, @RequestParam String studentId) {
 
 //        System.out.println("studentID = " + studentID);
 //        System.out.println("dates = " + dates);
 
         HashMap<String, Object> map = new HashMap<>();
 
-        List<Section> sections = sectionService.getSection(dates, studentID);
+        List<Section> sections = sectionService.getSection(dates, studentId);
 
         ArrayList<SectionWithSlot> sectionWithSlots = new ArrayList<>();
 
