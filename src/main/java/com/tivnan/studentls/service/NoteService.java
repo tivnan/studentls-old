@@ -6,6 +6,8 @@ import com.tivnan.studentls.dao.NoteMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * @project: studentls
  * @description: service for note
@@ -32,5 +34,21 @@ public class NoteService {
 
     }
 
+    public Note queryNoteByNoteId(String noteId) {
 
+        Note note = noteMapper.selectByPrimaryKey(noteId);
+        return note;
+    }
+
+    public List<Note> getSubmitNotes(Integer studentId, int i) {
+
+        NoteExample example = new NoteExample();
+        NoteExample.Criteria criteria = example.createCriteria();
+        criteria.andStudentIdEqualTo(studentId);
+        criteria.andStateEqualTo(i);
+
+        List<Note> notes = noteMapper.selectByExample(example);
+
+        return notes;
+    }
 }
