@@ -1,14 +1,15 @@
 package com.tivnan.studentls.controller;
 
 import com.tivnan.studentls.bean.Note;
+import com.tivnan.studentls.bean.vo.NoteWithStuName;
 import com.tivnan.studentls.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * @project: studentls
@@ -24,10 +25,10 @@ public class NoteController {
     NoteService noteService;
 
 //    请假单状态state
-//    0: 未完成的请假单
-//    1： 提交，正在审核
-//    2: 审核通过
-//    -1：审核拒绝
+//    0: 审核拒绝
+//    1： 审核通过
+//    >=2: 提交，正在审核
+//    -1：未完成的请假单
 
 
     //    保存未完成的请假单
@@ -47,9 +48,9 @@ public class NoteController {
         //传过来学生studetId，开始时间startTime,结束时间endTime,请假内容content，请假类型type
         //note_id,start_time,end_time,content,state,type,student_id
 
-        note.setState(0);
+        note.setState(-1);
 
-        System.out.println(note);
+//        System.out.println(note);
 
         HashMap<String, Object> map = new HashMap<>();
 
@@ -86,17 +87,15 @@ public class NoteController {
 //
 //        Note note = new Note(noteId, startTime, endTime, content, 0, type, studentId);
 
-
+        HashMap<String, Object> map = new HashMap<>();
         //传过来学生studetId，开始时间startTime,结束时间endTime,请假内容content，请假类型type
         //note_id,start_time,end_time,content,state,type,student_id
 
-        note.setState(1);
+//        note.setState(1);
 
         System.out.println(note);
 
-        HashMap<String, Object> map = new HashMap<>();
-
-        noteService.saveNote(note);
+        noteService.submitNote(note);
         map.put("noteId", note);
         return map;
 
@@ -116,7 +115,7 @@ public class NoteController {
 
     }
 
-    //    获取之前保存的请假单
+    //    获取之前保存且未提交的请假单
     @ResponseBody
     @RequestMapping(value = "/student/note/{noteId}", method = RequestMethod.GET)
     public HashMap<String, Object> loadUnfinishedNote(@PathVariable String noteId) {
@@ -140,9 +139,12 @@ public class NoteController {
     @RequestMapping(value = "/student/note/{studentId}", method = RequestMethod.PUT)
     public HashMap<String, Object> loadSubmitedNotes(@PathVariable Integer studentId) {
 
-        List<Note> notesUnderReview = noteService.getSubmitNotes(studentId, 1);
-        List<Note> notesWithPassed = noteService.getSubmitNotes(studentId, 2);
-        List<Note> notesWithRejected = noteService.getSubmitNotes(studentId, -1);
+//        正在审核
+        List<Note> notesUnderReview = noteService.getSubmitNotes(studentId, 2);
+//        审核通过
+        List<Note> notesWithPassed = noteService.getSubmitNotes(studentId, 1);
+//        审核拒绝
+        List<Note> notesWithRejected = noteService.getSubmitNotes(studentId, 0);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("notesUnderReview", notesUnderReview);
@@ -150,6 +152,38 @@ public class NoteController {
         map.put("notesWithRejected", notesWithRejected);
 
         return map;
+    }
+
+    //    获取需要审核的请假单
+//    还有问题，不能多位老师审核确认
+    @ResponseBody
+    @RequestMapping(value = "/teacher/note", method = RequestMethod.GET)
+    public HashMap<String, List<NoteWithStuName>> loadRequestListForTeacher(@RequestParam("teacherId") Integer teacherId) {
+
+        HashMap<String, List<NoteWithStuName>> map = new HashMap<>();
+
+        List<NoteWithStuName> notesNeedReview = noteService.getNotesNeedReview(teacherId);
+
+        for (NoteWithStuName noteWithStuName : notesNeedReview) {
+            if (map.get(noteWithStuName.getCourseName()) == null) {
+                ArrayList<NoteWithStuName> list = new ArrayList<>();
+                map.put(noteWithStuName.getCourseName(), list);
+                list.add(noteWithStuName);
+            } else {
+                map.get(noteWithStuName.getCourseName()).add(noteWithStuName);
+            }
+        }
+
+
+        return map;
+    }
+
+    @ResponseBody
+    @RequestMapping(value = "/teacher/note/{noteId}", method = RequestMethod.GET)
+    public void reviewNote(@PathVariable String noteId,
+                           @RequestParam("opinion") String opinion) {
+
+        noteService.reviewNote(noteId, opinion);
     }
 
 

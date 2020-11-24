@@ -2,14 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.tivnan.studentls.dao.NoteMapper">
     <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Note">
-        <id column="note_id" jdbcType="CHAR" property="noteId" />
-        <result column="start_time" jdbcType="CHAR" property="startTime" />
-        <result column="end_time" jdbcType="CHAR" property="endTime" />
-        <result column="content" jdbcType="VARCHAR" property="content" />
-        <result column="state" jdbcType="INTEGER" property="state" />
-        <result column="type" jdbcType="INTEGER" property="type" />
-        <result column="student_id" jdbcType="INTEGER" property="studentId" />
+        <id column="note_id" jdbcType="CHAR" property="noteId"/>
+        <result column="start_time" jdbcType="CHAR" property="startTime"/>
+        <result column="end_time" jdbcType="CHAR" property="endTime"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="student_id" jdbcType="INTEGER" property="studentId"/>
     </resultMap>
+
+    <resultMap id="NoteWithStuNameResultMap" type="com.tivnan.studentls.bean.vo.NoteWithStuName">
+        <id column="note_id" jdbcType="CHAR" property="noteId"/>
+        <result column="start_time" jdbcType="CHAR" property="startTime"/>
+        <result column="end_time" jdbcType="CHAR" property="endTime"/>
+        <result column="content" jdbcType="VARCHAR" property="content"/>
+        <result column="state" jdbcType="INTEGER" property="state"/>
+        <result column="type" jdbcType="INTEGER" property="type"/>
+        <result column="student_name" jdbcType="CHAR" property="studentName"/>
+        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
+    </resultMap>
+
     <sql id="Example_Where_Clause">
         <where>
             <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -28,7 +40,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -57,7 +70,8 @@
                                 </when>
                                 <when test="criterion.listValue">
                                     and ${criterion.condition}
-                                    <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                                    <foreach close=")" collection="criterion.value" item="listItem" open="("
+                                             separator=",">
                                         #{listItem}
                                     </foreach>
                                 </when>
@@ -71,15 +85,39 @@
     <sql id="Base_Column_List">
     note_id, start_time, end_time, content, state, type, student_id
   </sql>
+
+    <sql id="Column_List_With_Stu_Name">
+        n.note_id as note_id,
+        n.start_time as start_time,
+        n.end_time as end_time,
+        n.content as content,
+        n.state as state,
+        n.type as type,
+        s.name as student_name,
+        cs.course_name as course_name
+    </sql>
+
+    <select id="getNotesNeedReview" resultMap="NoteWithStuNameResultMap">
+        select
+        <include refid="Column_List_With_Stu_Name"></include>
+        from teacher
+        left join course cs on teacher.teacher_id = cs.teacher_id
+        left join hits h on cs.course_id = h.course_id
+        left join note n on h.note_id = n.note_id
+        left join student s on n.student_id = s.student_id
+        where cs.teacher_id = #{i}
+        and n.state >= 2
+    </select>
+
     <select id="selectByExample" parameterType="com.tivnan.studentls.bean.NoteExample" resultMap="BaseResultMap">
         select
         <if test="distinct">
             distinct
         </if>
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from note
         <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
+            <include refid="Example_Where_Clause"/>
         </if>
         <if test="orderByClause != null">
             order by ${orderByClause}
@@ -87,7 +125,7 @@
     </select>
     <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Base_Column_List"/>
         from note
         where note_id = #{noteId,jdbcType=CHAR}
     </select>
@@ -98,7 +136,7 @@
     <delete id="deleteByExample" parameterType="com.tivnan.studentls.bean.NoteExample">
         delete from note
         <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
+            <include refid="Example_Where_Clause"/>
         </if>
     </delete>
     <insert id="insert" parameterType="com.tivnan.studentls.bean.Note">
@@ -158,12 +196,22 @@
             </if>
         </trim>
     </insert>
+
     <select id="countByExample" parameterType="com.tivnan.studentls.bean.NoteExample" resultType="java.lang.Long">
         select count(*) from note
         <if test="_parameter != null">
-            <include refid="Example_Where_Clause" />
+            <include refid="Example_Where_Clause"/>
         </if>
     </select>
+
+    <select id="countNumOfAuditors" resultType="java.lang.Long">
+        select count(distinct c.course_id) as num
+from note
+         left join hits h on note.note_id = h.note_id
+         left join course c on h.course_id = c.course_id
+where note.note_id = #{i};
+    </select>
+
     <update id="updateByExampleSelective" parameterType="map">
         update note
         <set>
@@ -190,7 +238,7 @@
             </if>
         </set>
         <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause" />
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
     <update id="updateByExample" parameterType="map">
@@ -203,7 +251,7 @@
         type = #{record.type,jdbcType=INTEGER},
         student_id = #{record.studentId,jdbcType=INTEGER}
         <if test="_parameter != null">
-            <include refid="Update_By_Example_Where_Clause" />
+            <include refid="Update_By_Example_Where_Clause"/>
         </if>
     </update>
     <update id="updateByPrimaryKeySelective" parameterType="com.tivnan.studentls.bean.Note">

@@ -9,7 +9,7 @@ public class Note {
 
     private String content;
 
-    private Integer state;
+    private long state;
 
     private Integer type;
 
@@ -18,7 +18,13 @@ public class Note {
     public Note() {
     }
 
-    public Note(String noteId, String startTime, String endTime, String content, Integer state, Integer type, Integer studentId) {
+    public Note(String noteId,
+                String startTime,
+                String endTime,
+                String content,
+                Integer state,
+                Integer type,
+                Integer studentId) {
         this.noteId = noteId;
         this.startTime = startTime;
         this.endTime = endTime;
@@ -60,11 +66,11 @@ public class Note {
         this.content = content == null ? null : content.trim();
     }
 
-    public Integer getState() {
+    public long getState() {
         return state;
     }
 
-    public void setState(Integer state) {
+    public void setState(long state) {
         this.state = state;
     }
 
