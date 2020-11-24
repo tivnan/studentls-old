@@ -26,8 +26,8 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private String appID = "";
-    private String appSecret = "";
+    private String appID = "isAuthenticated";
+    private String appSecret = "isAuthenticated";
 
     @Autowired
     private StudentService studentService;
@@ -36,8 +36,33 @@ public class LoginController {
     private TeacherService teacherService;
 
     @ResponseBody
-    @RequestMapping(value = "/login",method = RequestMethod.POST)
-    public Map<String, Object> Login(@RequestBody Map<String, Object> map) throws IOException {
+    @RequestMapping(value = "/login")
+    public Map<String, Object> login(@RequestParam("code") String code) throws IOException {
+        String openID = getOpenID(code).getOpenid();
+
+        Student student = studentService.login(openID);
+        Teacher teacher = teacherService.login(openID);
+
+        HashMap<String, Object> map1 = new HashMap<>();
+
+        if (student != null) {
+            map1.put("isAuthenticated", Boolean.TRUE);
+            map1.put("user", student);
+        } else if (teacher != null) {
+            map1.put("isAuthenticated", Boolean.TRUE);
+            map1.put("user", teacher);
+        } else {
+            map1.put("isAuthenticated", Boolean.FALSE);
+        }
+
+        return map1;
+
+    }
+
+
+    @ResponseBody
+    @RequestMapping(value = "/auth", method = RequestMethod.POST)
+    public Map<String, Object> authentication(@RequestBody Map<String, Object> map) throws IOException {
 
 //        , @RequestParam("code") String code,
 //        @RequestParam("identity") String identity,
@@ -48,10 +73,10 @@ public class LoginController {
         Integer id = (Integer) map.get("id");
 
 
-//        String openID = getOpenID(code).getOpenid();
-        String openID = code;
+        String openID = getOpenID(code).getOpenid();
+//        String openID = code;
 
-        System.out.println("code = " + code);
+//        System.out.println("code = " + code);
 
         Map<String, Object> loginData = new HashMap<>();
 
@@ -133,6 +158,7 @@ public class LoginController {
         OpenIDBean openIDBean = mapper.readValue(result, OpenIDBean.class);
         return openIDBean;
     }
+
 
 
 }

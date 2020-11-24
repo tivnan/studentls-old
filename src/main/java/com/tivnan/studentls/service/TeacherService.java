@@ -1,7 +1,5 @@
 package com.tivnan.studentls.service;
 
-import com.tivnan.studentls.bean.Student;
-import com.tivnan.studentls.bean.StudentExample;
 import com.tivnan.studentls.bean.Teacher;
 import com.tivnan.studentls.bean.TeacherExample;
 import com.tivnan.studentls.dao.TeacherMapper;
@@ -23,7 +21,7 @@ public class TeacherService {
     @Autowired
     TeacherMapper teacherMapper;
 
-    public Teacher login(String openID,Integer id) {
+    public Teacher login(String openID, Integer id) {
 
         TeacherExample teacherExample = new TeacherExample();
         TeacherExample.Criteria criteria = teacherExample.createCriteria();
@@ -48,7 +46,6 @@ public class TeacherService {
                 return null;
             }
         }
-
 
 
 //        Teacher teacher = teacherMapper.selectByPrimaryKey(id);
@@ -88,4 +85,21 @@ public class TeacherService {
 //            return teachers.get(0);
 //        }
     }
+
+    public Teacher login(String openID) {
+
+        TeacherExample teacherExample = new TeacherExample();
+        TeacherExample.Criteria criteria = teacherExample.createCriteria();
+        criteria.andOpenIdEqualTo(openID);
+
+        List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
+
+        if (teachers != null && teachers.size() != 0) {
+
+            return teachers.get(0);
+        }
+        return null;
+    }
+
+
 }

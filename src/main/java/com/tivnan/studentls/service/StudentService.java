@@ -95,4 +95,16 @@ public class StudentService {
 //        return studentMapper.selectByExample(studentExample).get(0);
     }
 
+    public Student login(String openID) {
+        StudentExample studentExample = new StudentExample();
+        StudentExample.Criteria criteria = studentExample.createCriteria();
+        criteria.andOpenIdEqualTo(openID);
+        List<Student> students = studentMapper.selectByExample(studentExample);
+
+        if (students != null && students.size() != 0) {
+            return students.get(0);
+        }
+
+        return null;
+    }
 }

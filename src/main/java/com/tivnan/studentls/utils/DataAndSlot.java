@@ -64,17 +64,17 @@ public class DataAndSlot {
         return list;
     }
 
-    public static void main(String[] args) throws ParseException {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = dateFormat.parse("2020-09-06");
-        System.out.println("date = " + date);
-
-        dateFormat.applyPattern("w");
-        System.out.println("第" + dateFormat.format(date) + "周");
-
-        dateFormat.applyPattern("E");
-        System.out.println("周" + dateFormat.format(date));
-
-    }
+//    public static void main(String[] args) throws ParseException {
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+//        Date date = dateFormat.parse("2020-09-06");
+//        System.out.println("date = " + date);
+//
+//        dateFormat.applyPattern("w");
+//        System.out.println("第" + dateFormat.format(date) + "周");
+//
+//        dateFormat.applyPattern("E");
+//        System.out.println("周" + dateFormat.format(date));
+//
+//    }
 
 }

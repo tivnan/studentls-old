@@ -1,15 +1,23 @@
 package com.tivnan.studentls.bean;
 
 public class HitsKey {
-    private Integer noteId;
+    private String noteId;
 
     private Integer courseId;
 
-    public Integer getNoteId() {
+    public HitsKey() {
+    }
+
+    public HitsKey(String noteId, Integer courseId) {
+        this.noteId = noteId;
+        this.courseId = courseId;
+    }
+
+    public String getNoteId() {
         return noteId;
     }
 
-    public void setNoteId(Integer noteId) {
+    public void setNoteId(String noteId) {
         this.noteId = noteId;
     }
 

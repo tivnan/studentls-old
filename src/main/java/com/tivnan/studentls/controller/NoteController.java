@@ -55,7 +55,7 @@ public class NoteController {
         HashMap<String, Object> map = new HashMap<>();
 
         noteService.saveNote(note);
-        map.put("noteId", note);
+        map.put("isSavedSuccess", Boolean.TRUE);
         return map;
 
 
@@ -93,10 +93,10 @@ public class NoteController {
 
 //        note.setState(1);
 
-        System.out.println(note);
+//        System.out.println(note);
 
-        noteService.submitNote(note);
-        map.put("noteId", note);
+        Boolean aBoolean = noteService.submitNote(note);
+        map.put("isSubmitSuccess", aBoolean);
         return map;
 
 
@@ -122,9 +122,10 @@ public class NoteController {
 
         Note note = noteService.queryNoteByNoteId(noteId);
 
-        System.out.println(note);
-
         HashMap<String, Object> map = new HashMap<>();
+
+//        System.out.println(note);
+
 
         map.put("unfinishedList", note);
 
@@ -178,12 +179,22 @@ public class NoteController {
         return map;
     }
 
+    //    审核
     @ResponseBody
     @RequestMapping(value = "/teacher/note/{noteId}", method = RequestMethod.GET)
-    public void reviewNote(@PathVariable String noteId,
-                           @RequestParam("opinion") String opinion) {
+    public HashMap<String, Object> reviewNote(@PathVariable String noteId,
+                                              @RequestParam("opinion") String opinion) {
 
-        noteService.reviewNote(noteId, opinion);
+        int i = noteService.reviewNote(noteId, opinion);
+
+        HashMap<String, Object> map = new HashMap<>();
+
+        if (i != 0) {
+            map.put("isReviewSuccess", Boolean.TRUE);
+        }else {
+            map.put("isReviewSuccess", Boolean.FALSE);
+        }
+        return map;
     }
 
 
