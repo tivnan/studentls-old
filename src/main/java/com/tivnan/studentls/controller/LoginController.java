@@ -26,9 +26,6 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private String appID = "wx07026120b8ca5c85";
-    private String appSecret = "e4880f49fecea8a6b9fd49a9e5d4dc50";
-
     @Autowired
     private StudentService studentService;
 
@@ -98,7 +95,6 @@ public class LoginController {
             loginData.put("type", "teacher");
         } else {
             loginData.put("user", null);
-
         }
         return loginData;
 
@@ -158,10 +154,12 @@ public class LoginController {
         try {
             //请求微信服务器，用code换取openid。
             // HttpUtil是工具类，后面会给出实现，Configure类是小程序配置信息，后面会给出代码
+            String appSecret = "e4880f49fecea8a6b9fd49a9e5d4dc50";
+            String appID = "wx07026120b8ca5c85";
             result = HttpUtil.doGet(
                     "https://api.weixin.qq.com/sns/jscode2session"
-                            + "?appid=" + this.appID
-                            + "&secret=" + this.appSecret
+                            + "?appid=" + appID
+                            + "&secret=" + appSecret
                             + "&js_code=" + code
                             + "&grant_type=authorization_code", null);
         } catch (Exception e) {
