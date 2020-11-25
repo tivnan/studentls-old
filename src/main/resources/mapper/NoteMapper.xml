@@ -144,6 +144,7 @@
             <include refid="Example_Where_Clause"/>
         </if>
     </delete>
+
     <insert id="insert" parameterType="com.tivnan.studentls.bean.Note">
     insert into note (note_id, start_time, end_time,
       content, state, type,
@@ -213,7 +214,8 @@
         select count(distinct c.course_id) as num
 from note
          left join hits h on note.note_id = h.note_id
-         left join course c on h.course_id = c.course_id
+         left join times t on h.course_id=t.id
+         left join course c on t.course_id = c.course_id
 where note.note_id = #{i};
     </select>
 

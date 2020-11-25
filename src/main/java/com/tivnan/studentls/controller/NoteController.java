@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @project: studentls
@@ -77,7 +78,7 @@ public class NoteController {
     //    提交请假单
     @ResponseBody
     @RequestMapping(value = "/student/note", method = RequestMethod.POST)
-    public HashMap<String, Object> submitNote(@RequestBody Note note) {
+    public HashMap<String, Object> submitNote(@RequestBody Map<String, Object> map) {
 //    public HashMap<String, Object> saveNote(@RequestParam("id") Integer id,
 //                                            @RequestParam("startTime") String startTime,
 //                                            @RequestParam("endTime") String endTime,
@@ -87,7 +88,21 @@ public class NoteController {
 //
 //        Note note = new Note(noteId, startTime, endTime, content, 0, type, id);
 
-        HashMap<String, Object> map = new HashMap<>();
+        String startTime = (String) map.get("startTime");
+        String endTime = (String) map.get("endTime");
+        String content = (String) map.get("content");
+        Integer type = (Integer) map.get("type");
+        Integer studentId = (Integer) map.get("studentId");
+
+        List<String> selectedList = (List<String>) map.get("selectedList");
+
+
+        Note note = new Note(startTime, endTime, content, type, studentId);
+
+        Boolean aBoolean = noteService.submitNote(note,selectedList);
+
+
+        HashMap<String, Object> map1 = new HashMap<>();
         //传过来学生studetId，开始时间startTime,结束时间endTime,请假内容content，请假类型type
         //note_id,start_time,end_time,content,state,type,student_id
 
@@ -95,9 +110,9 @@ public class NoteController {
 
 //        System.out.println(note);
 
-        Boolean aBoolean = noteService.submitNote(note);
+
         map.put("isSubmitSuccess", aBoolean);
-        return map;
+        return map1;
 
 
 //        if (note.getNoteId() == null) {

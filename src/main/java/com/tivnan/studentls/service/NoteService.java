@@ -1,20 +1,19 @@
 package com.tivnan.studentls.service;
 
-import com.tivnan.studentls.bean.HitsKey;
-import com.tivnan.studentls.bean.Note;
-import com.tivnan.studentls.bean.NoteExample;
-import com.tivnan.studentls.bean.Review;
+import com.tivnan.studentls.bean.*;
 import com.tivnan.studentls.bean.vo.NoteWithStuName;
 import com.tivnan.studentls.bean.vo.Section;
 import com.tivnan.studentls.dao.HitsMapper;
 import com.tivnan.studentls.dao.NoteMapper;
 import com.tivnan.studentls.dao.ReviewMapper;
+import com.tivnan.studentls.dao.SelectedMapper;
 import com.tivnan.studentls.utils.SEToDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @project: studentls
@@ -31,6 +30,9 @@ public class NoteService {
 
     @Autowired
     HitsMapper hitsMapper;
+
+    @Autowired
+    SelectedMapper selectedMapper;
 
     @Autowired
     SectionService sectionService;
@@ -73,31 +75,25 @@ public class NoteService {
         return notes;
     }
 
-    public Boolean submitNote(Note note) {
+    public Boolean submitNote(Note note, List<String> selectedList) {
 
-        long NumOfAuditors = noteMapper.countNumOfAuditors(note.getNoteId());
+        String noteId = UUID.randomUUID().toString().substring(0, 20);
 
-        note.setState(NumOfAuditors + 1);
+        note.setNoteId(noteId);
+
+        note.setState(selectedList.size() + 1);
+
+//        插入hits
+        for (String s : selectedList) {
+            hitsMapper.insert(new HitsKey(noteId, Integer.parseInt(s)));
+        }
+
+//        插入selected
+        for (String s : selectedList) {
+            selectedMapper.insert(new Selected(noteId, s));
+        }
 
         int i = saveNote(note);
-
-        String startTime = note.getStartTime();
-        String endTime = note.getEndTime();
-
-        List<String> dates = SEToDates.SEToDates(startTime, endTime);
-
-        List<Section> sections = sectionService.getSection(dates, String.valueOf(note.getStudentId()));
-
-        HashSet<Integer> ints = new HashSet<Integer>();
-
-        for (Section section : sections) {
-            ints.add(section.getCourseId());
-        }
-
-        for (Integer anInt : ints) {
-            hitsMapper.insert(new HitsKey(note.getNoteId(), anInt));
-        }
-
 
         if (i != 0) {
             return Boolean.TRUE;
@@ -105,6 +101,41 @@ public class NoteService {
 
 
         return Boolean.FALSE;
+
+        //        保存进去note
+//        int i = saveNote(note);
+//
+//
+//        String startTime = note.getStartTime();
+//        String endTime = note.getEndTime();
+//
+//        List<String> dates = SEToDates.SEToDates(startTime, endTime);
+//
+////        获取到的课程小节
+//        List<Section> sections = sectionService.getSection(dates, String.valueOf(note.getStudentId()));
+//
+//        HashSet<Integer> ints = new HashSet<Integer>();
+//
+////每一个课程最小粒度的请假单id
+//        for (Section section : sections) {
+//            ints.add(section.getId());
+//        }
+//
+////        插入hits
+//        for (Integer anInt : ints) {
+//            hitsMapper.insert(new HitsKey(note.getNoteId(), anInt));
+//        }
+//
+////求出涉及的课程数目
+//        long NumOfAuditors = noteMapper.countNumOfAuditors(note.getNoteId());
+//
+//        note.setState(NumOfAuditors + 1);
+
+
+        //        保存进去note
+//        int i = saveNote(note);
+
+
     }
 
     public List<NoteWithStuName> getNotesNeedReview(Integer teacherId) {

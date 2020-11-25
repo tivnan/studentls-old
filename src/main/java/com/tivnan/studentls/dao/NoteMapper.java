@@ -34,4 +34,6 @@ public interface NoteMapper {
     long countNumOfAuditors(String noteId);
 
     List<NoteWithStuName> getNotesNeedReview(Integer teacherId);
+
+//  int insertWithSelectedList(Note record);
 }

@@ -3,6 +3,7 @@ package com.tivnan.studentls.controller;
 import com.tivnan.studentls.bean.vo.Section;
 import com.tivnan.studentls.bean.vo.SectionWithSlot;
 import com.tivnan.studentls.service.SectionService;
+import com.tivnan.studentls.utils.SEToDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -30,14 +31,22 @@ public class SectionController {
     //    提供日期和学生信息 拉取课程小节信息
     @ResponseBody
     @RequestMapping("/loadSection")
-    public Map<String, Object> loadSection(@RequestParam List<String> dates, @RequestParam String studentId) {
+    public Map<String, Object> loadSection(@RequestParam String startTime,@RequestParam String endTime, @RequestParam("userId") Integer userId) {
+//    public Map<String, Object> loadSection(@RequestParam List<String> dates, @RequestParam String id) {
 
 //        System.out.println("studentID = " + studentID);
 //        System.out.println("dates = " + dates);
 
+//        yyyy-MM-dd
+
+        String id = String.valueOf(userId);
+
+        List<String> dates = SEToDates.SEToDates(startTime, endTime);
+
+
         HashMap<String, Object> map = new HashMap<>();
 
-        List<Section> sections = sectionService.getSection(dates, studentId);
+        List<Section> sections = sectionService.getSection(dates, id);
 
         ArrayList<SectionWithSlot> sectionWithSlots = new ArrayList<>();
 

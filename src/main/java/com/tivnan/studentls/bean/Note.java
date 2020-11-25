@@ -1,5 +1,9 @@
 package com.tivnan.studentls.bean;
 
+import com.tivnan.studentls.bean.vo.Section;
+
+import java.util.List;
+
 public class Note {
     private String noteId;
 
@@ -15,7 +19,17 @@ public class Note {
 
     private Integer studentId;
 
+//    SelectedLIst selectedList;
+
     public Note() {
+    }
+
+    public Note(String startTime, String endTime, String content, Integer type, Integer studentId) {
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.content = content;
+        this.type = type;
+        this.studentId = studentId;
     }
 
     public Note(String noteId,

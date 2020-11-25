@@ -45,9 +45,11 @@ public class LoginController {
         if (student != null) {
             map1.put("isAuthenticated", Boolean.TRUE);
             map1.put("user", student);
+            map1.put("type", "student");
         } else if (teacher != null) {
             map1.put("isAuthenticated", Boolean.TRUE);
             map1.put("user", teacher);
+            map1.put("type", "teacher");
         } else {
             map1.put("isAuthenticated", Boolean.FALSE);
             Student student1 = new Student();

@@ -15,7 +15,7 @@ public class SectionWithSlot {
     private String timeSlot;
 
     public SectionWithSlot(Section section) {
-        this.id = section.getCourseId();
+        this.id = section.getId();
         this.courseName = section.getCourseName();
         this.teacher = section.getTeacherName();
         this.timeSlot = weekToTimeSlot(section.getTimeWeek(), section.getTimeSlot());

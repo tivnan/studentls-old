@@ -8,7 +8,7 @@ package com.tivnan.studentls.bean.vo;
  * @version: 1.0
  **/
 public class Section {
-    private Integer courseId;
+    private Integer id;
 
     private String courseName;
 
@@ -20,12 +20,12 @@ public class Section {
 
 
 
-    public Integer getCourseId() {
-        return courseId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setCourseId(Integer courseId) {
-        this.courseId = courseId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getCourseName() {
@@ -63,7 +63,7 @@ public class Section {
     @Override
     public String toString() {
         return "Section{" +
-                "courseId=" + courseId +
+                "courseId=" + id +
                 ", courseName='" + courseName + '\'' +
                 ", teacherName='" + teacherName + '\'' +
                 ", timeWeek=" + timeWeek +

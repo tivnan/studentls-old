@@ -9,7 +9,7 @@
     </resultMap>
 
     <resultMap id="SectionResultMap" type="com.tivnan.studentls.bean.vo.Section">
-        <id column="courseId" jdbcType="INTEGER" property="courseId"/>
+        <id column="id" jdbcType="INTEGER" property="id"/>
         <result column="courseName" jdbcType="CHAR" property="courseName"/>
         <result column="teacherName" jdbcType="CHAR" property="teacherName"/>
         <result column="timeWeek" jdbcType="INTEGER" property="timeWeek"/>
@@ -82,7 +82,7 @@
 
     <!--    请假拉取的课程-->
     <sql id="Section_List">
-        c.course_id as courseId,
+        t3.id as id,
         c.course_name as courseName,
         t2.name as teacherName,
         t3.week as timeWeek,
