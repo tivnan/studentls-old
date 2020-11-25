@@ -1,18 +1,18 @@
 package com.tivnan.studentls.bean;
 
 public class Teacher {
-    private Integer teacherId;
+    private Integer id;
 
     private String name;
 
     private String openId;
 
-    public Integer getTeacherId() {
-        return teacherId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setTeacherId(Integer teacherId) {
-        this.teacherId = teacherId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

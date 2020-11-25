@@ -30,30 +30,44 @@ public class StudentService {
 //          没，查找id有没有
 //                有，插入openid到这个账号，登录成功
 //                 没，id错了
+//
+//        StudentExample studentExample = new StudentExample();
+//        StudentExample.Criteria criteria = studentExample.createCriteria();
+//        criteria.andOpenIdEqualTo(openID);
+//        List<Student> students = studentMapper.selectByExample(studentExample);
+//
+//        if (students != null && students.size() != 0) {
+//            if (students.get(0).getStudentId().equals(id)) {
+//                return students.get(0);
+//            } else {
+//                return null;
+//            }
+//        } else {
+//            Student student = studentMapper.selectByPrimaryKey(id);
+//
+//            if (student != null) {
+//                student.setOpenId(openID);
+//                studentMapper.updateByPrimaryKey(student);
+//                return student;
+//            } else {
+//                return null;
+//            }
+//
+//
+//
+//        }
 
-        StudentExample studentExample = new StudentExample();
-        StudentExample.Criteria criteria = studentExample.createCriteria();
-        criteria.andOpenIdEqualTo(openID);
-        List<Student> students = studentMapper.selectByExample(studentExample);
+        Student student = studentMapper.selectByPrimaryKey(id);
 
-        if (students != null && students.size() != 0) {
-            if (students.get(0).getStudentId().equals(id)) {
-                return students.get(0);
-            } else {
-                return null;
-            }
+        System.out.println(student);
+
+        if (student != null) {
+            student.setOpenId(openID);
+            studentMapper.updateByPrimaryKeySelective(student);
+            return student;
         } else {
-            Student student = studentMapper.selectByPrimaryKey(id);
-
-            if (student != null) {
-                student.setOpenId(openID);
-                studentMapper.updateByPrimaryKey(student);
-                return student;
-            } else {
-                return null;
-            }
+            return null;
         }
-
 
 //        Student student = studentMapper.selectByPrimaryKey(id);
 //

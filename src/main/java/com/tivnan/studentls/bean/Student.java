@@ -4,24 +4,24 @@ public class Student {
     @Override
     public String toString() {
         return "Student{" +
-                "studentId=" + studentId +
+                "studentId=" + id +
                 ", name='" + name + '\'' +
                 ", openId='" + openId + '\'' +
                 '}';
     }
 
-    private Integer studentId;
+    private Integer id;
 
     private String name;
 
     private String openId;
 
-    public Integer getStudentId() {
-        return studentId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

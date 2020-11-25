@@ -3,7 +3,7 @@
 <mapper namespace="com.tivnan.studentls.dao.TeacherMapper">
 
     <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Teacher">
-        <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <id column="teacher_id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="open_id" jdbcType="CHAR" property="openId"/>
     </resultMap>

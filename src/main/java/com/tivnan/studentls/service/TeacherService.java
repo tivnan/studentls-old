@@ -30,7 +30,7 @@ public class TeacherService {
         List<Teacher> teachers = teacherMapper.selectByExample(teacherExample);
 
         if (teachers != null && teachers.size() != 0) {
-            if (teachers.get(0).getTeacherId().equals(id)) {
+            if (teachers.get(0).getId().equals(id)) {
                 return teachers.get(0);
             } else {
                 return null;

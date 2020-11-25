@@ -26,8 +26,8 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private String appID = "isAuthenticated";
-    private String appSecret = "isAuthenticated";
+    private String appID = "wx07026120b8ca5c85";
+    private String appSecret = "e4880f49fecea8a6b9fd49a9e5d4dc50";
 
     @Autowired
     private StudentService studentService;
@@ -53,6 +53,9 @@ public class LoginController {
             map1.put("user", teacher);
         } else {
             map1.put("isAuthenticated", Boolean.FALSE);
+            Student student1 = new Student();
+            student1.setOpenId(openID);
+            map1.put("user", student1);
         }
 
         return map1;
@@ -68,13 +71,18 @@ public class LoginController {
 //        @RequestParam("identity") String identity,
 //        @RequestParam("id") Integer id
 
-        String code = (String) map.get("code");
-        String identity = (String) map.get("identity");
+//        String code = (String) map.get("code");
+        String identity = (String) map.get("identify");
         Integer id = (Integer) map.get("id");
 
 
-        String openID = getOpenID(code).getOpenid();
+//        String openID = getOpenID(code).getOpenid();
+        String openID = (String) map.get("openId");
 //        String openID = code;
+
+//        System.out.println("openID = " + openID);
+//        System.out.println("id = " + id);
+//        System.out.println("identity = " + identity);
 
 //        System.out.println("code = " + code);
 
@@ -83,12 +91,17 @@ public class LoginController {
         if ("student".equals(identity)) {
             Student student = studentService.login(openID, id);
             loginData.put("user", student);
-        } else {
+            loginData.put("type", "student");
+        } else if ("teacher".equals(identity)) {
             Teacher teacher = teacherService.login(openID, id);
             loginData.put("user", teacher);
-        }
+            loginData.put("type", "teacher");
+        } else {
+            loginData.put("user", null);
 
+        }
         return loginData;
+
 
 //
 //        Student student = studentService.login(openID);
@@ -158,7 +171,6 @@ public class LoginController {
         OpenIDBean openIDBean = mapper.readValue(result, OpenIDBean.class);
         return openIDBean;
     }
-
 
 
 }

@@ -1,5 +1,8 @@
 package com.tivnan.studentls.utils;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.tivnan.studentls.bean.vo.OpenIDBean;
 import org.apache.http.HttpStatus;
 
 import java.io.BufferedReader;
@@ -64,5 +67,34 @@ public class HttpUtil {
         }
 
         return null;
+    }
+
+
+    public static void main(String[] args) throws JsonProcessingException {
+
+        String appID = "wx07026120b8ca5c85";
+        String appSecret = "e4880f49fecea8a6b9fd49a9e5d4dc50";
+
+
+        String code = "0830290w3GpRmV2J2T2w3lakIB30290z";
+        String result = "";
+        try {
+            //请求微信服务器，用code换取openid。
+            // HttpUtil是工具类，后面会给出实现，Configure类是小程序配置信息，后面会给出代码
+            result = HttpUtil.doGet(
+                    "https://api.weixin.qq.com/sns/jscode2session"
+                            + "?appid=" + appID
+                            + "&secret=" + appSecret
+                            + "&js_code=" + code
+                            + "&grant_type=authorization_code", null);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        ObjectMapper mapper = new ObjectMapper();
+        OpenIDBean openIDBean = mapper.readValue(result, OpenIDBean.class);
+
+        System.out.println(openIDBean);
+
+        System.out.println(openIDBean.getOpenid());
     }
 }
