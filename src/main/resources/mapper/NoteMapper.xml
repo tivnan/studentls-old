@@ -107,6 +107,11 @@
         left join student s on n.student_id = s.student_id
         where cs.teacher_id = #{i}
         and n.state >= 2
+        and n.note_id not in (
+        select note_id
+        from review
+        where review.teacher_id = #{i}
+        )
     </select>
 
     <select id="selectByExample" parameterType="com.tivnan.studentls.bean.NoteExample" resultMap="BaseResultMap">

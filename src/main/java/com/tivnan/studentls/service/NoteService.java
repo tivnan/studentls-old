@@ -3,10 +3,12 @@ package com.tivnan.studentls.service;
 import com.tivnan.studentls.bean.HitsKey;
 import com.tivnan.studentls.bean.Note;
 import com.tivnan.studentls.bean.NoteExample;
+import com.tivnan.studentls.bean.Review;
 import com.tivnan.studentls.bean.vo.NoteWithStuName;
 import com.tivnan.studentls.bean.vo.Section;
 import com.tivnan.studentls.dao.HitsMapper;
 import com.tivnan.studentls.dao.NoteMapper;
+import com.tivnan.studentls.dao.ReviewMapper;
 import com.tivnan.studentls.utils.SEToDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +34,9 @@ public class NoteService {
 
     @Autowired
     SectionService sectionService;
+
+    @Autowired
+    ReviewMapper reviewMapper;
 
     public int saveNote(Note note) {
 
@@ -107,17 +112,20 @@ public class NoteService {
         return notesNeedReview;
     }
 
-    public int reviewNote(String noteId, String opinion) {
+    public int verifyNote(String noteId, String opinion, Integer id) {
         Note note = noteMapper.selectByPrimaryKey(noteId);
 
         if ("agree".equals(opinion)) {
             if (note.getState() >= 2) {
                 note.setState(note.getState() - 1);
-               return noteMapper.updateByPrimaryKeySelective(note);
+
+                reviewMapper.insert(new Review(noteId, id));
+
+                return noteMapper.updateByPrimaryKeySelective(note);
             }
         } else {
             note.setState(-1);
-           return noteMapper.updateByPrimaryKeySelective(note);
+            return noteMapper.updateByPrimaryKeySelective(note);
         }
 
 

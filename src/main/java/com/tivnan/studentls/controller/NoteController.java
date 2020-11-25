@@ -35,14 +35,14 @@ public class NoteController {
     @ResponseBody
     @RequestMapping(value = "/student/note/{noteId}", method = RequestMethod.POST)
     public HashMap<String, Object> saveNote(@RequestBody Note note) {
-//    public HashMap<String, Object> saveNote(@RequestParam("studentId") Integer studentId,
+//    public HashMap<String, Object> saveNote(@RequestParam("id") Integer id,
 //                                            @RequestParam("startTime") String startTime,
 //                                            @RequestParam("endTime") String endTime,
 //                                            @RequestParam("content") String content,
 //                                            @RequestParam("type") Integer type,
 //                                            @RequestParam("noteId") String noteId) {
 //
-//        Note note = new Note(noteId, startTime, endTime, content, 0, type, studentId);
+//        Note note = new Note(noteId, startTime, endTime, content, 0, type, id);
 
 
         //传过来学生studetId，开始时间startTime,结束时间endTime,请假内容content，请假类型type
@@ -78,14 +78,14 @@ public class NoteController {
     @ResponseBody
     @RequestMapping(value = "/student/note", method = RequestMethod.POST)
     public HashMap<String, Object> submitNote(@RequestBody Note note) {
-//    public HashMap<String, Object> saveNote(@RequestParam("studentId") Integer studentId,
+//    public HashMap<String, Object> saveNote(@RequestParam("id") Integer id,
 //                                            @RequestParam("startTime") String startTime,
 //                                            @RequestParam("endTime") String endTime,
 //                                            @RequestParam("content") String content,
 //                                            @RequestParam("type") Integer type,
 //                                            @RequestParam("noteId") String noteId) {
 //
-//        Note note = new Note(noteId, startTime, endTime, content, 0, type, studentId);
+//        Note note = new Note(noteId, startTime, endTime, content, 0, type, id);
 
         HashMap<String, Object> map = new HashMap<>();
         //传过来学生studetId，开始时间startTime,结束时间endTime,请假内容content，请假类型type
@@ -137,15 +137,15 @@ public class NoteController {
 
     //    获取学生提交过的请假单
     @ResponseBody
-    @RequestMapping(value = "/student/note/{studentId}", method = RequestMethod.PUT)
-    public HashMap<String, Object> loadSubmitedNotes(@PathVariable Integer studentId) {
+    @RequestMapping(value = "/student/note/{id}", method = RequestMethod.PUT)
+    public HashMap<String, Object> loadSubmitedNotes(@PathVariable Integer id) {
 
 //        正在审核
-        List<Note> notesUnderReview = noteService.getSubmitNotes(studentId, 2);
+        List<Note> notesUnderReview = noteService.getSubmitNotes(id, 2);
 //        审核通过
-        List<Note> notesWithPassed = noteService.getSubmitNotes(studentId, 1);
+        List<Note> notesWithPassed = noteService.getSubmitNotes(id, 1);
 //        审核拒绝
-        List<Note> notesWithRejected = noteService.getSubmitNotes(studentId, 0);
+        List<Note> notesWithRejected = noteService.getSubmitNotes(id, 0);
 
         HashMap<String, Object> map = new HashMap<>();
         map.put("notesUnderReview", notesUnderReview);
@@ -182,16 +182,17 @@ public class NoteController {
     //    审核
     @ResponseBody
     @RequestMapping(value = "/teacher/note/{noteId}", method = RequestMethod.GET)
-    public HashMap<String, Object> reviewNote(@PathVariable String noteId,
-                                              @RequestParam("opinion") String opinion) {
+    public HashMap<String, Object> verifNote(@PathVariable String noteId,
+                                             @RequestParam("opinion") String opinion,
+                                             @RequestParam("id") Integer id) {
 
-        int i = noteService.reviewNote(noteId, opinion);
+        int i = noteService.verifyNote(noteId, opinion, id);
 
         HashMap<String, Object> map = new HashMap<>();
 
         if (i != 0) {
             map.put("isReviewSuccess", Boolean.TRUE);
-        }else {
+        } else {
             map.put("isReviewSuccess", Boolean.FALSE);
         }
         return map;
