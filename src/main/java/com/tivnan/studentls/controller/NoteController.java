@@ -1,7 +1,9 @@
 package com.tivnan.studentls.controller;
 
 import com.tivnan.studentls.bean.Note;
-import com.tivnan.studentls.bean.vo.NoteWithStuName;
+import com.tivnan.studentls.bean.vo.FinishedNote;
+import com.tivnan.studentls.bean.vo.NotesNeedReview;
+import com.tivnan.studentls.bean.vo.UNFinishedNote;
 import com.tivnan.studentls.service.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,10 +31,9 @@ public class NoteController {
 //    0: 审核拒绝
 //    1： 审核通过
 //    >=2: 提交，正在审核
-//    -1：未完成的请假单
 
 
-    //    保存未完成的请假单
+/*    //    保存未完成的请假单
     @ResponseBody
     @RequestMapping(value = "/student/note/{noteId}", method = RequestMethod.POST)
     public HashMap<String, Object> saveNote(@RequestBody Note note) {
@@ -73,7 +74,26 @@ public class NoteController {
 //            return map;
 //        }
 
-    }
+    }*/
+
+/*    //    获取之前保存且未提交的请假单
+    @ResponseBody
+    @RequestMapping(value = "/student/note/{noteId}", method = RequestMethod.GET)
+    public HashMap<String, Object> loadUnfinishedNote(@PathVariable String noteId) {
+
+        Note note = noteService.queryNoteByNoteId(noteId);
+
+        HashMap<String, Object> map = new HashMap<>();
+
+//        System.out.println(note);
+
+
+        map.put("unfinishedList", note);
+
+        return map;
+
+
+    }*/
 
     //    提交请假单
     @ResponseBody
@@ -96,10 +116,15 @@ public class NoteController {
 
         List<String> selectedList = (List<String>) map.get("selectedList");
 
+//        System.out.println("selectedList = " + selectedList);
 
         Note note = new Note(startTime, endTime, content, type, studentId);
 
-        Boolean aBoolean = noteService.submitNote(note,selectedList);
+//        System.out.println("note = " + note);
+
+//        System.out.println("note = " + note);
+
+        Boolean aBoolean = noteService.submitNote(note, selectedList);
 
 
         HashMap<String, Object> map1 = new HashMap<>();
@@ -111,10 +136,8 @@ public class NoteController {
 //        System.out.println(note);
 
 
-        map.put("isSubmitSuccess", aBoolean);
+        map1.put("isSubmitSuccess", aBoolean);
         return map1;
-
-
 //        if (note.getNoteId() == null) {
 ////            完全新的请假单
 //            String s = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
@@ -130,78 +153,83 @@ public class NoteController {
 
     }
 
-    //    获取之前保存且未提交的请假单
+    //    拉取已完成请假单
     @ResponseBody
-    @RequestMapping(value = "/student/note/{noteId}", method = RequestMethod.GET)
-    public HashMap<String, Object> loadUnfinishedNote(@PathVariable String noteId) {
+    @RequestMapping(value = "/student/note/loadFinishedRequest", method = RequestMethod.GET)
+    public HashMap<String, Object> loadFinishedRequest(@RequestParam Integer id) {
 
-        Note note = noteService.queryNoteByNoteId(noteId);
-
-        HashMap<String, Object> map = new HashMap<>();
-
-//        System.out.println(note);
-
-
-        map.put("unfinishedList", note);
-
-        return map;
-
-
-    }
-
-
-    //    获取学生提交过的请假单
-    @ResponseBody
-    @RequestMapping(value = "/student/note/{id}", method = RequestMethod.PUT)
-    public HashMap<String, Object> loadSubmitedNotes(@PathVariable Integer id) {
-
-//        正在审核
-        List<Note> notesUnderReview = noteService.getSubmitNotes(id, 2);
-//        审核通过
+//        审核通过的或者拒绝的
         List<Note> notesWithPassed = noteService.getSubmitNotes(id, 1);
-//        审核拒绝
-        List<Note> notesWithRejected = noteService.getSubmitNotes(id, 0);
 
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("notesUnderReview", notesUnderReview);
-        map.put("notesWithPassed", notesWithPassed);
-        map.put("notesWithRejected", notesWithRejected);
-
-        return map;
-    }
-
-    //    获取需要审核的请假单
-//    还有问题，不能多位老师审核确认
-    @ResponseBody
-    @RequestMapping(value = "/teacher/note", method = RequestMethod.GET)
-    public HashMap<String, List<NoteWithStuName>> loadRequestListForTeacher(@RequestParam("teacherId") Integer teacherId) {
-
-        HashMap<String, List<NoteWithStuName>> map = new HashMap<>();
-
-        List<NoteWithStuName> notesNeedReview = noteService.getNotesNeedReview(teacherId);
-
-        for (NoteWithStuName noteWithStuName : notesNeedReview) {
-            if (map.get(noteWithStuName.getCourseName()) == null) {
-                ArrayList<NoteWithStuName> list = new ArrayList<>();
-                map.put(noteWithStuName.getCourseName(), list);
-                list.add(noteWithStuName);
-            } else {
-                map.get(noteWithStuName.getCourseName()).add(noteWithStuName);
-            }
+        ArrayList<FinishedNote> finishedList = new ArrayList<>();
+        for (Note note : notesWithPassed) {
+            finishedList.add(new FinishedNote(note));
         }
 
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("finishedList", finishedList);
+
+        return map;
+    }
+
+    //    拉取未完成请假单
+    @ResponseBody
+    @RequestMapping(value = "/student/note/loadUnfinishedRequest", method = RequestMethod.GET)
+    public HashMap<String, Object> loadUnfinishedRequest(@RequestParam Integer id) {
+
+//        正在审核的
+        List<Note> notesUnderReview = noteService.getSubmitNotes(id, 2);
+
+        ArrayList<UNFinishedNote> unfinishedList = new ArrayList<>();
+        for (Note note : notesUnderReview) {
+            unfinishedList.add(new UNFinishedNote(note));
+        }
+
+
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("unfinishedList", unfinishedList);
+
+        return map;
+    }
+
+
+    //    教师获取需要审核的请假单
+    @ResponseBody
+    @RequestMapping(value = "/teacher/note/loadRequestListForTeacher", method = RequestMethod.GET)
+    public HashMap<String, List<NotesNeedReview>> loadRequestListForTeacher(@RequestParam("id") Integer teacherId) {
+
+        HashMap<String, List<NotesNeedReview>> map = new HashMap<>();
+
+        List<NotesNeedReview> notesNeedReview = noteService.getNotesNeedReview(teacherId);
+
+//        for (NotesNeedReview needReview : notesNeedReview) {
+//            needReview.updateSectionTime();
+//        }
+
+//        for (NotesNeedReview noteWithStuName : notesNeedReview) {
+//            if (map.get(noteWithStuName.getCourseName()) == null) {
+//                ArrayList<NotesNeedReview> list = new ArrayList<>();
+//                map.put(noteWithStuName.getCourseName(), list);
+//                list.add(noteWithStuName);
+//            } else {
+//                map.get(noteWithStuName.getCourseName()).add(noteWithStuName);
+//            }
+//        }
+
+        map.put("list", notesNeedReview);
 
         return map;
     }
 
     //    审核
     @ResponseBody
-    @RequestMapping(value = "/teacher/note/{noteId}", method = RequestMethod.GET)
-    public HashMap<String, Object> verifNote(@PathVariable String noteId,
+    @RequestMapping(value = "/teacher/note/verifyRequest", method = RequestMethod.GET)
+    public HashMap<String, Object> verifNote(@RequestParam("noteId") String noteId,
                                              @RequestParam("opinion") String opinion,
-                                             @RequestParam("id") Integer id) {
+                                             @RequestParam("id") Integer id,
+                                             @RequestParam("sectionId") Integer timesId) {
 
-        int i = noteService.verifyNote(noteId, opinion, id);
+        int i = noteService.verifyNote(noteId, opinion, id,timesId);
 
         HashMap<String, Object> map = new HashMap<>();
 

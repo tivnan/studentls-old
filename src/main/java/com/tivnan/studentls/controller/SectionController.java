@@ -31,7 +31,7 @@ public class SectionController {
     //    提供日期和学生信息 拉取课程小节信息
     @ResponseBody
     @RequestMapping("/loadSection")
-    public Map<String, Object> loadSection(@RequestParam String startTime,@RequestParam String endTime, @RequestParam("userId") Integer userId) {
+        public Map<String, Object> loadSection(@RequestParam String startTime,@RequestParam String endTime, @RequestParam("userId") Integer userId) {
 //    public Map<String, Object> loadSection(@RequestParam List<String> dates, @RequestParam String id) {
 
 //        System.out.println("studentID = " + studentID);

@@ -9,12 +9,12 @@ package com.tivnan.studentls.bean;
  **/
 public class Selected {
     private String noteId;
-    private String timesId;
+    private Integer timesId;
 
     public Selected() {
     }
 
-    public Selected(String noteId, String timesId) {
+    public Selected(String noteId, Integer timesId) {
         this.noteId = noteId;
         this.timesId = timesId;
     }
@@ -27,11 +27,11 @@ public class Selected {
         this.noteId = noteId;
     }
 
-    public String getTimesId() {
+    public Integer getTimesId() {
         return timesId;
     }
 
-    public void setTimesId(String timesId) {
+    public void setTimesId(Integer timesId) {
         this.timesId = timesId;
     }
 }

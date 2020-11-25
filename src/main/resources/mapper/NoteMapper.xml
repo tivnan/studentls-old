@@ -11,15 +11,16 @@
         <result column="student_id" jdbcType="INTEGER" property="studentId"/>
     </resultMap>
 
-    <resultMap id="NoteWithStuNameResultMap" type="com.tivnan.studentls.bean.vo.NoteWithStuName">
-        <id column="note_id" jdbcType="CHAR" property="noteId"/>
-        <result column="start_time" jdbcType="CHAR" property="startTime"/>
-        <result column="end_time" jdbcType="CHAR" property="endTime"/>
+    <resultMap id="NotesNeedReviewResultMap" type="com.tivnan.studentls.bean.vo.NotesNeedReview">
+        <id column="reqId" jdbcType="CHAR" property="reqId"/>
+        <result column="sectionId" jdbcType="INTEGER" property="sectionId"/>
+        <result column="courseId" jdbcType="INTEGER" property="courseId"/>
+        <result column="courseName" jdbcType="VARCHAR" property="courseName"/>
+        <result column="sectionTime" jdbcType="VARCHAR" property="sectionTime"/>
+        <result column="stuName" jdbcType="CHAR" property="stuName"/>
+        <result column="stuId" jdbcType="INTEGER" property="stuId"/>
+        <result column="reqType" jdbcType="INTEGER" property="reqType"/>
         <result column="content" jdbcType="VARCHAR" property="content"/>
-        <result column="state" jdbcType="INTEGER" property="state"/>
-        <result column="type" jdbcType="INTEGER" property="type"/>
-        <result column="student_name" jdbcType="CHAR" property="studentName"/>
-        <result column="course_name" jdbcType="VARCHAR" property="courseName"/>
     </resultMap>
 
     <sql id="Example_Where_Clause">
@@ -87,30 +88,33 @@
   </sql>
 
     <sql id="Column_List_With_Stu_Name">
-        n.note_id as note_id,
-        n.start_time as start_time,
-        n.end_time as end_time,
-        n.content as content,
-        n.state as state,
-        n.type as type,
-        s.name as student_name,
-        cs.course_name as course_name
+        n.note_id                          as reqId,
+       t.id                               as sectionId,
+       c.course_id                        as courseId,
+       c.course_name                      as courseName,
+       concat(n.start_time,'X', n.start_time) as sectionTime,
+       s2.name                            as stuName,
+       s2.student_id                      as stuId,
+       n.type                             as reqType,
+       n.content                          as content
     </sql>
 
-    <select id="getNotesNeedReview" resultMap="NoteWithStuNameResultMap">
+    <select id="getNotesNeedReview" resultMap="NotesNeedReviewResultMap">
         select
         <include refid="Column_List_With_Stu_Name"></include>
         from teacher
-        left join course cs on teacher.teacher_id = cs.teacher_id
-        left join hits h on cs.course_id = h.course_id
-        left join note n on h.note_id = n.note_id
-        left join student s on n.student_id = s.student_id
-        where cs.teacher_id = #{i}
+        left join course c on teacher.teacher_id = c.teacher_id
+        left join times t on c.course_id = t.course_id
+        left join selected s on t.id = s.times_id
+        left join note n on s.note_id = n.note_id
+        left join student s2 on n.student_id = s2.student_id
+        where teacher.teacher_id = #{i}
         and n.state >= 2
-        and n.note_id not in (
-        select note_id
+        and s.times_id not in (
+        select review.times_id
         from review
         where review.teacher_id = #{i}
+        and review.note_id = n.note_id
         )
     </select>
 

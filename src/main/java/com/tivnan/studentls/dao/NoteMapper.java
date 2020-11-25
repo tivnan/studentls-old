@@ -5,7 +5,7 @@ import com.tivnan.studentls.bean.NoteExample;
 
 import java.util.List;
 
-import com.tivnan.studentls.bean.vo.NoteWithStuName;
+import com.tivnan.studentls.bean.vo.NotesNeedReview;
 import org.apache.ibatis.annotations.Param;
 
 public interface NoteMapper {
@@ -33,7 +33,9 @@ public interface NoteMapper {
 
     long countNumOfAuditors(String noteId);
 
-    List<NoteWithStuName> getNotesNeedReview(Integer teacherId);
+//    List<NoteWithStuName> getNotesNeedReview(Integer teacherId);
+
+    List<NotesNeedReview> getNotesNeedReview(Integer teacherId);
 
 //  int insertWithSelectedList(Note record);
 }

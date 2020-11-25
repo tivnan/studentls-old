@@ -1,7 +1,7 @@
 package com.tivnan.studentls.service;
 
 import com.tivnan.studentls.bean.*;
-import com.tivnan.studentls.bean.vo.NoteWithStuName;
+import com.tivnan.studentls.bean.vo.NotesNeedReview;
 import com.tivnan.studentls.bean.vo.Section;
 import com.tivnan.studentls.dao.HitsMapper;
 import com.tivnan.studentls.dao.NoteMapper;
@@ -65,7 +65,7 @@ public class NoteService {
         NoteExample.Criteria criteria = example.createCriteria();
         criteria.andStudentIdEqualTo(studentId);
         if (i != 2) {
-            criteria.andStateEqualTo(i);
+            criteria.andStateLessThanOrEqualTo(1);
         } else {
             criteria.andStateGreaterThanOrEqualTo(2);
         }
@@ -75,25 +75,37 @@ public class NoteService {
         return notes;
     }
 
+    //    selectedList是一个list，string，需要转换为int
     public Boolean submitNote(Note note, List<String> selectedList) {
 
-        String noteId = UUID.randomUUID().toString().substring(0, 20);
+        String noteId = UUID.randomUUID().toString().replaceAll("-", "").substring(0, 20);
 
         note.setNoteId(noteId);
 
         note.setState(selectedList.size() + 1);
 
-//        插入hits
-        for (String s : selectedList) {
-            hitsMapper.insert(new HitsKey(noteId, Integer.parseInt(s)));
-        }
+        int i = saveNote(note);
+
 
 //        插入selected
         for (String s : selectedList) {
-            selectedMapper.insert(new Selected(noteId, s));
+            selectedMapper.insert(new Selected(noteId, new Integer(s)));
         }
 
-        int i = saveNote(note);
+
+//        String startTime = note.getStartTime();
+//        String endTime = note.getEndTime();
+//        List<String> dates = SEToDates.SEToDates(startTime, endTime);
+//
+//        List<Section> sections = sectionService.getSection(dates, String.valueOf(note.getStudentId()));
+//        HashSet<Integer> ints = new HashSet<Integer>();
+//        for (Section section : sections) {
+//            ints.add(section.getId());
+//        }
+//        for (Integer anInt : ints) {
+//            hitsMapper.insert(new HitsKey(note.getNoteId(), anInt));
+//        }
+
 
         if (i != 0) {
             return Boolean.TRUE;
@@ -138,19 +150,20 @@ public class NoteService {
 
     }
 
-    public List<NoteWithStuName> getNotesNeedReview(Integer teacherId) {
-        List<NoteWithStuName> notesNeedReview = noteMapper.getNotesNeedReview(teacherId);
+    public List<NotesNeedReview> getNotesNeedReview(Integer teacherId) {
+        List<NotesNeedReview> notesNeedReview = noteMapper.getNotesNeedReview(teacherId);
         return notesNeedReview;
+//        return null;
     }
 
-    public int verifyNote(String noteId, String opinion, Integer id) {
+    public int verifyNote(String noteId, String opinion, Integer id, Integer timesId) {
         Note note = noteMapper.selectByPrimaryKey(noteId);
 
         if ("agree".equals(opinion)) {
             if (note.getState() >= 2) {
                 note.setState(note.getState() - 1);
 
-                reviewMapper.insert(new Review(noteId, id));
+                reviewMapper.insert(new Review(noteId, id,timesId));
 
                 return noteMapper.updateByPrimaryKeySelective(note);
             }

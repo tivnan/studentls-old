@@ -10,13 +10,12 @@ package com.tivnan.studentls.bean;
 public class Review {
     private String noteId;
     private Integer id;
+    private Integer timesId;
 
-    public Review(String noteId, Integer id) {
+    public Review(String noteId, Integer id, Integer timesId) {
         this.noteId = noteId;
         this.id = id;
-    }
-
-    public Review() {
+        this.timesId = timesId;
     }
 
     public String getNoteId() {
@@ -33,5 +32,13 @@ public class Review {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getTimesId() {
+        return timesId;
+    }
+
+    public void setTimesId(Integer timesId) {
+        this.timesId = timesId;
     }
 }

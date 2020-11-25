@@ -24,7 +24,24 @@ public class Note {
     public Note() {
     }
 
-    public Note(String startTime, String endTime, String content, Integer type, Integer studentId) {
+    @Override
+    public String toString() {
+        return "Note{" +
+                "noteId='" + noteId + '\'' +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", content='" + content + '\'' +
+                ", state=" + state +
+                ", type=" + type +
+                ", studentId=" + studentId +
+                '}';
+    }
+
+    public Note(String startTime,
+                String endTime,
+                String content,
+                Integer type,
+                Integer studentId) {
         this.startTime = startTime;
         this.endTime = endTime;
         this.content = content;

@@ -3,8 +3,8 @@
 <mapper namespace="com.tivnan.studentls.dao.ReviewMapper">
 
     <insert id="insert" parameterType="com.tivnan.studentls.bean.Review">
-   insert into review(note_id, teacher_id)
-values (#{noteId,jdbcType=CHAR},#{id,jdbcType=INTEGER})
+   insert into review(note_id, teacher_id,times_id)
+values (#{noteId,jdbcType=CHAR},#{id,jdbcType=INTEGER},#{timesId,jdbcType=INTEGER})
   </insert>
 
 </mapper>
