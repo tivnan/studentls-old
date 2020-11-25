@@ -143,6 +143,15 @@
         </if>
     </select>
 
+    <select id="countByleaveNum" resultType="java.lang.Integer">
+select count(*)
+from times
+         left join selected s on times.id = s.times_id
+         left join note n on n.note_id = s.note_id
+where times_id =#{i}
+  and n.state = 1
+  </select>
+
     <update id="updateByExampleSelective" parameterType="map">
         update course
         <set>
