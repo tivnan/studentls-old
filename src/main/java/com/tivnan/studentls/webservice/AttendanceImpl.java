@@ -1,10 +1,15 @@
 package com.tivnan.studentls.webservice;
 
+import com.tivnan.studentls.bean.CourseExample;
+import com.tivnan.studentls.bean.Times;
+import com.tivnan.studentls.bean.TimesExample;
 import com.tivnan.studentls.dao.CourseMapper;
+import com.tivnan.studentls.dao.TimesMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.jws.WebService;
+import java.util.List;
 
 /**
  * @project: studentls
@@ -20,10 +25,31 @@ public class AttendanceImpl implements Attendance {
     @Autowired
     CourseMapper courseMapper;
 
+    @Autowired
+    TimesMapper timesMapper;
+
+//    public Integer leaveNum(Integer id) {
+//
+//        return courseMapper.countByleaveNum(id);
+//
+//    }
+
     @Override
-    public Integer leaveNum(Integer id) {
+    public Integer leaveNum(Integer courseId, Integer week, Integer time) {
+
+        TimesExample timesExample = new TimesExample();
+
+        TimesExample.Criteria criteria = timesExample.createCriteria();
+
+        criteria.andCourseIdEqualTo(courseId);
+        criteria.andTimeEqualTo(time);
+        criteria.andWeekEqualTo(week);
+
+        Integer id = timesMapper.selectByExampleWithTimesId(timesExample);
 
         return courseMapper.countByleaveNum(id);
 
     }
+
+
 }
