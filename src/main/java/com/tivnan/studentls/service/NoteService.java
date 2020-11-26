@@ -7,6 +7,7 @@ import com.tivnan.studentls.dao.HitsMapper;
 import com.tivnan.studentls.dao.NoteMapper;
 import com.tivnan.studentls.dao.ReviewMapper;
 import com.tivnan.studentls.dao.SelectedMapper;
+import com.tivnan.studentls.utils.DataAndSlot;
 import com.tivnan.studentls.utils.SEToDates;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -152,6 +153,12 @@ public class NoteService {
 
     public List<NotesNeedReview> getNotesNeedReview(Integer teacherId) {
         List<NotesNeedReview> notesNeedReview = noteMapper.getNotesNeedReview(teacherId);
+
+        for (NotesNeedReview needReview : notesNeedReview) {
+            String secTionTime = DataAndSlot.weekXtimeToSlot(needReview.getSectionTime());
+            needReview.setSectionTime(secTionTime);
+        }
+
         return notesNeedReview;
 //        return null;
     }
@@ -169,6 +176,7 @@ public class NoteService {
             }
         } else {
             note.setState(-1);
+            reviewMapper.insert(new Review(noteId, id,timesId));
             return noteMapper.updateByPrimaryKeySelective(note);
         }
 

@@ -73,14 +73,14 @@ public class FinishedNote {
         this.total = total;
     }
 
-    //    0: 审核拒绝
+    //    -1: 审核拒绝
 //    1： 审核通过
 //    改为
 //          1通过
 //          2拒绝
     public FinishedNote(Note note) {
 
-        if (Math.toIntExact(note.getState()) == 0) {
+        if (Math.toIntExact(note.getState()) == -1) {
             processType = 2;
         } else {
             processType = 1;

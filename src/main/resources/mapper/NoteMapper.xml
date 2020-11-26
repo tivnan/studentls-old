@@ -92,7 +92,7 @@
        t.id                               as sectionId,
        c.course_id                        as courseId,
        c.course_name                      as courseName,
-       concat(n.start_time,' to ', n.start_time) as sectionTime,
+       concat(t.week,'X', t.time) as sectionTime,
        s2.name                            as stuName,
        s2.student_id                      as stuId,
        n.type                             as reqType,

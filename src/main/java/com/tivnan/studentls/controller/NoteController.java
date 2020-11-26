@@ -202,9 +202,10 @@ public class NoteController {
 
         List<NotesNeedReview> notesNeedReview = noteService.getNotesNeedReview(teacherId);
 
-//        for (NotesNeedReview needReview : notesNeedReview) {
-//            needReview.updateSectionTime();
-//        }
+        for (NotesNeedReview needReview : notesNeedReview) {
+            String weekXtime = needReview.getSectionTime();
+
+        }
 
 //        for (NotesNeedReview noteWithStuName : notesNeedReview) {
 //            if (map.get(noteWithStuName.getCourseName()) == null) {
@@ -229,7 +230,7 @@ public class NoteController {
                                              @RequestParam("id") Integer id,
                                              @RequestParam("sectionId") Integer timesId) {
 
-        int i = noteService.verifyNote(noteId, opinion, id,timesId);
+        int i = noteService.verifyNote(noteId, opinion, id, timesId);
 
         HashMap<String, Object> map = new HashMap<>();
 
