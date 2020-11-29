@@ -95,6 +95,15 @@ public class NoteController {
 
     }*/
 
+
+
+
+//注意注意，新数据库中，note_id变成了int类型
+//注意注意，新数据库中，review变成了verify
+//
+
+
+
     //    提交请假单
     @ResponseBody
     @RequestMapping(value = "/student/note", method = RequestMethod.POST)
