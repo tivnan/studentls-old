@@ -1,5 +1,6 @@
 package com.tivnan.studentls.dao;
 
+import com.tivnan.studentls.bean.vo.Section;
 import com.tivnan.studentls.bean.Student;
 import com.tivnan.studentls.bean.StudentExample;
 
@@ -29,4 +30,13 @@ public interface StudentMapper {
     int updateByPrimaryKeySelective(Student record);
 
     int updateByPrimaryKey(Student record);
+
+
+    //    查找信息
+    List<Section> selectWithSection(@Param("studentId") Integer studentId,
+                                    @Param("timeWeek") Integer timeWeek,
+                                    @Param("timeSlotBegin") Integer timeSlotBegin,
+                                    @Param("timeSlotEnd") Integer timeSlotEnd);
+
+
 }

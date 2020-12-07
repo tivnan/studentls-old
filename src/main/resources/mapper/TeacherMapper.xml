@@ -3,7 +3,7 @@
 <mapper namespace="com.tivnan.studentls.dao.TeacherMapper">
 
     <resultMap id="BaseResultMap" type="com.tivnan.studentls.bean.Teacher">
-        <id column="teacher_id" jdbcType="INTEGER" property="teacherId"/>
+        <id column="teacher_id" jdbcType="INTEGER" property="id"/>
         <result column="name" jdbcType="CHAR" property="name"/>
         <result column="open_id" jdbcType="CHAR" property="openId"/>
     </resultMap>
@@ -90,12 +90,12 @@
         select
         <include refid="Base_Column_List"/>
         from teacher
-        where teacher_id = #{teacherId,jdbcType=INTEGER}
+        where teacher_id = #{id,jdbcType=INTEGER}
     </select>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
     delete from teacher
-    where teacher_id = #{teacherId,jdbcType=INTEGER}
+    where teacher_id = #{id,jdbcType=INTEGER}
   </delete>
     <delete id="deleteByExample" parameterType="com.tivnan.studentls.bean.TeacherExample">
         delete from teacher
@@ -107,13 +107,13 @@
     <insert id="insert" parameterType="com.tivnan.studentls.bean.Teacher">
     insert into teacher (teacher_id, name, open_id
       )
-    values (#{teacherId,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{openId,jdbcType=CHAR}
+    values (#{id,jdbcType=INTEGER}, #{name,jdbcType=CHAR}, #{openId,jdbcType=CHAR}
       )
   </insert>
     <insert id="insertSelective" parameterType="com.tivnan.studentls.bean.Teacher">
         insert into teacher
         <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="teacherId != null">
+            <if test="id != null">
                 teacher_id,
             </if>
             <if test="name != null">
@@ -124,8 +124,8 @@
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-            <if test="teacherId != null">
-                #{teacherId,jdbcType=INTEGER},
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
             </if>
             <if test="name != null">
                 #{name,jdbcType=CHAR},
@@ -146,8 +146,8 @@
     <update id="updateByExampleSelective" parameterType="map">
         update teacher
         <set>
-            <if test="record.teacherId != null">
-                teacher_id = #{record.teacherId,jdbcType=INTEGER},
+            <if test="record.id != null">
+                teacher_id = #{record.id,jdbcType=INTEGER},
             </if>
             <if test="record.name != null">
                 name = #{record.name,jdbcType=CHAR},
@@ -162,7 +162,7 @@
     </update>
     <update id="updateByExample" parameterType="map">
         update teacher
-        set teacher_id = #{record.teacherId,jdbcType=INTEGER},
+        set teacher_id = #{record.id,jdbcType=INTEGER},
         name = #{record.name,jdbcType=CHAR},
         open_id = #{record.openId,jdbcType=CHAR}
         <if test="_parameter != null">
@@ -179,13 +179,13 @@
                 open_id = #{openId,jdbcType=CHAR},
             </if>
         </set>
-        where teacher_id = #{teacherId,jdbcType=INTEGER}
+        where teacher_id = #{id,jdbcType=INTEGER}
     </update>
     <update id="updateByPrimaryKey" parameterType="com.tivnan.studentls.bean.Teacher">
     update teacher
     set name = #{name,jdbcType=CHAR},
       open_id = #{openId,jdbcType=CHAR}
-    where teacher_id = #{teacherId,jdbcType=INTEGER}
+    where teacher_id = #{id,jdbcType=INTEGER}
   </update>
 
 </mapper>

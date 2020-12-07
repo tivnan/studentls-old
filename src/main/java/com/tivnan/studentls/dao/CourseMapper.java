@@ -29,4 +29,6 @@ public interface CourseMapper {
     int updateByPrimaryKeySelective(Course record);
 
     int updateByPrimaryKey(Course record);
+
+    int countByleaveNum(Integer couseId);
 }

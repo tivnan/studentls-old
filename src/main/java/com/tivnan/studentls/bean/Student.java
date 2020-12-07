@@ -1,18 +1,27 @@
 package com.tivnan.studentls.bean;
 
 public class Student {
-    private Integer studentId;
+    @Override
+    public String toString() {
+        return "Student{" +
+                "studentId=" + id +
+                ", name='" + name + '\'' +
+                ", openId='" + openId + '\'' +
+                '}';
+    }
+
+    private Integer id;
 
     private String name;
 
     private String openId;
 
-    public Integer getStudentId() {
-        return studentId;
+    public Integer getId() {
+        return id;
     }
 
-    public void setStudentId(Integer studentId) {
-        this.studentId = studentId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -21,6 +21,8 @@ public interface TimesMapper {
 
     List<Times> selectByExample(TimesExample example);
 
+    Integer selectByExampleWithTimesId(TimesExample example);
+
     Times selectByPrimaryKey(TimesKey key);
 
     int updateByExampleSelective(@Param("record") Times record, @Param("example") TimesExample example);
@@ -30,4 +32,6 @@ public interface TimesMapper {
     int updateByPrimaryKeySelective(Times record);
 
     int updateByPrimaryKey(Times record);
+
+
 }

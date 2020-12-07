@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tivnan.studentls.dao.SelectedMapper">
+
+    <insert id="insert" parameterType="com.tivnan.studentls.bean.Selected">
+  insert into selected(note_id, times_id)
+values (#{noteId,jdbcType=CHAR},#{timesId,jdbcType=INTEGER})
+  </insert>
+
+    <select id="selectByNoteId" resultType="java.lang.String">
+select times_id
+from selected
+where note_id=#{noteId,jdbcType=CHAR}
+    </select>
+
+</mapper>

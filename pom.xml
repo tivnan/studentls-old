@@ -61,7 +61,6 @@
             <version>8.0.22</version>
         </dependency>
 
-
         <!--        <dependency>-->
         <!--            <groupId>javax.servlet.jsp.jstl</groupId>-->
         <!--            <artifactId>jstl-api</artifactId>-->
@@ -97,6 +96,53 @@
             <groupId>org.mybatis.generator</groupId>
             <artifactId>mybatis-generator-core</artifactId>
             <version>1.4.0</version>
+        </dependency>
+
+        <!--        &lt;!&ndash;        pagehelper&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.pagehelper</groupId>-->
+        <!--            <artifactId>pagehelper</artifactId>-->
+        <!--            <version>5.2.0</version>-->
+        <!--        </dependency>-->
+
+        <!--        自动将resposebody转换为json-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.11.3</version>
+        </dependency>
+
+        <!--        &lt;!&ndash;        微信登录&ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.binarywang</groupId>-->
+        <!--            <artifactId>weixin-java-miniapp</artifactId>-->
+        <!--            <version>3.9.0</version>-->
+        <!--        </dependency>-->
+
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+
+
+        <!--        web service-->
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-frontend-jaxws</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-core</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-transports-http</artifactId>
+            <version>3.4.1</version>
         </dependency>
 
 

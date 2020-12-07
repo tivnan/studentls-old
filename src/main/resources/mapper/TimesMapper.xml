@@ -86,6 +86,21 @@
             order by ${orderByClause}
         </if>
     </select>
+
+
+    <select id="selectByExampleWithTimesId" parameterType="com.tivnan.studentls.bean.TimesExample" resultType="java.lang.Integer">
+        select
+        id
+        from times
+        <if test="_parameter != null">
+            <include refid="Example_Where_Clause"/>
+        </if>
+        <if test="orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+
+
     <select id="selectByPrimaryKey" parameterType="com.tivnan.studentls.bean.TimesKey" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
