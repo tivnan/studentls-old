@@ -26,8 +26,8 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
-    private String appID = "wx07026120b8ca5c85";
-    private String appSecret = "e4880f49fecea8a6b9fd49a9e5d4dc50";
+    private String appID = "";
+    private String appSecret = "";
 
     @Autowired
     private StudentService studentService;
