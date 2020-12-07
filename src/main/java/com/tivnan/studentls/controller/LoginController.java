@@ -156,8 +156,8 @@ public class LoginController {
         try {
             //请求微信服务器，用code换取openid。
             // HttpUtil是工具类，后面会给出实现，Configure类是小程序配置信息，后面会给出代码
-            String appSecret = "e4880f49fecea8a6b9fd49a9e5d4dc50";
-            String appID = "wx07026120b8ca5c85";
+            String appSecret = "";
+            String appID = "";
             result = HttpUtil.doGet(
                     "https://api.weixin.qq.com/sns/jscode2session"
                             + "?appid=" + appID
