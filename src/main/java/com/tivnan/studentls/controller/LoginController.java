@@ -26,6 +26,9 @@ import java.util.Map;
 @Controller
 public class LoginController {
 
+    private String appID = "";
+    private String appSecret = "";
+
     @Autowired
     private StudentService studentService;
 
@@ -45,11 +48,9 @@ public class LoginController {
         if (student != null) {
             map1.put("isAuthenticated", Boolean.TRUE);
             map1.put("user", student);
-            map1.put("type", "student");
         } else if (teacher != null) {
             map1.put("isAuthenticated", Boolean.TRUE);
             map1.put("user", teacher);
-            map1.put("type", "teacher");
         } else {
             map1.put("isAuthenticated", Boolean.FALSE);
             Student student1 = new Student();
@@ -97,6 +98,7 @@ public class LoginController {
             loginData.put("type", "teacher");
         } else {
             loginData.put("user", null);
+
         }
         return loginData;
 
@@ -156,12 +158,10 @@ public class LoginController {
         try {
             //请求微信服务器，用code换取openid。
             // HttpUtil是工具类，后面会给出实现，Configure类是小程序配置信息，后面会给出代码
-            String appSecret = "";
-            String appID = "";
             result = HttpUtil.doGet(
                     "https://api.weixin.qq.com/sns/jscode2session"
-                            + "?appid=" + appID
-                            + "&secret=" + appSecret
+                            + "?appid=" + this.appID
+                            + "&secret=" + this.appSecret
                             + "&js_code=" + code
                             + "&grant_type=authorization_code", null);
         } catch (Exception e) {
